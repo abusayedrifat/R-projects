@@ -100,16 +100,16 @@ yao
 ```{r}
 # $ allows you to extract a data frame column to a vector
 # then let's look at the first 10 items of the vector
-yao_age <- yaounde %>% 
+yao_age <- yao$age 
+head(yao_age, 10)
   
-  filter(age<18)
 ```
 
 ------------------------------------------------------------------------
 
 ```{r}
 # let's pass this yao$age vector into mean()
-____________________
+mean(yao$age)
 ```
 
 And that's it! Extremely easy, right?
@@ -123,7 +123,7 @@ And that's it! Extremely easy, right?
 ```{r}
 yao %>% 
   # let's use summarize to get the mean age
-  ________________________________________
+ summarize(mean_age = mean(age))
 ```
 
 ![*Fig.* Basic syntax for the `summarize()` function.](images/summarize_syntax.png)
@@ -135,8 +135,8 @@ yao %>%
 ```{r}
 yao %>%
   # let's calculate the mean and the median age at the same time !
-  summarize(___________________________________
-            ___________________________________)
+  summarize( age_mean = mean(age),
+             age_median = median(age))
 ```
 
 Nice and simple!
@@ -160,10 +160,14 @@ Your output should be a data frame with three columns named as shown below:
 |----------------|------------------|--------------|
 |                |                  |              |
 
-```{r, eval = FALSE}
+```{r}
 Q_weight_summary <- 
   yao %>%
-  ____________________________
+  summarize(mean_weight_kg = mean(weight_kg),
+            median_weight_kg = median(weight_kg),
+            sd_weight_kg = sd(weight_kg))
+
+Q_weight_summary
 ```
 
 ```{r, include = FALSE}
@@ -188,10 +192,14 @@ Your output should be a data frame with two columns named as shown below:
 |---------------|---------------|
 |               |               |
 
-```{r, eval = FALSE}
+```{r}
 Q_height_summary <- 
   yao %>% 
-  ____________________________
+  summarize(
+    min_height_cm = min(height_cm),
+    max_height_cm = max(height_cm)
+            )
+Q_height_summary
 ```
 
 ```{r, eval = FALSE}
@@ -215,7 +223,7 @@ Q_height_summary <-
 ```{r}
 yao %>% 
   # let's group by sex
- ____________________
+ group_by(sex)
 ```
 
 Let's look at the header !
@@ -230,10 +238,11 @@ Let's combine `group_by()` and `summarize()` !
 ```{r}
 yao %>% 
   # we group by sex
-  ________________________
+  group_by(sex) %>% 
   # we summarize to get the mean and median
-  ________________________
-  ________________________
+  summarize( mean_age = mean(age),
+             median_age = median(age))
+  
 ```
 
 This kind of grouped summary is the primary reason the `summarize()` is so useful!
@@ -243,10 +252,11 @@ This kind of grouped summary is the primary reason the `summarize()` is so usefu
 ```{r}
 yao %>% 
   # group by neighborhoods
-  group_by(______________________) %>% 
+  group_by(neighborhood) %>% 
   # calculate the min and max weight
-  summarize(_________________________________
-            _________________________________)
+  summarize( min_weight = min(weight_kg),
+             max_weight = max(weight_kg)
+            )
 ```
 
 Great! With just a few code lines you are able to extract quite a bit of information.
