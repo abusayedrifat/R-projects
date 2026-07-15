@@ -2048,13 +2048,31 @@ women).</p></li>
 <hr />
 <div class="sourceCode" id="cb35"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" tabindex="-1"></a>yao <span class="sc">%&gt;%</span></span>
 <span id="cb35-2"><a href="#cb35-2" tabindex="-1"></a>  <span class="co"># let&#39;s group by sex and neighborhood</span></span>
-<span id="cb35-3"><a href="#cb35-3" tabindex="-1"></a>  <span class="fu">group_by</span>(__________________________) <span class="sc">%&gt;%</span> </span>
+<span id="cb35-3"><a href="#cb35-3" tabindex="-1"></a>  <span class="fu">group_by</span>(sex, neighborhood ) <span class="sc">%&gt;%</span> </span>
 <span id="cb35-4"><a href="#cb35-4" tabindex="-1"></a>  <span class="co"># we summarize to get the mean age</span></span>
-<span id="cb35-5"><a href="#cb35-5" tabindex="-1"></a>  <span class="fu">summarize</span>(__________________________)</span></code></pre></div>
-<pre><code>## Error in parse(text = input): &lt;text&gt;:3:13: unexpected input
-## 2:   # let&#39;s group by sex and neighborhood
-## 3:   group_by(__
-##                ^</code></pre>
+<span id="cb35-5"><a href="#cb35-5" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">mean_age =</span> <span class="fu">mean</span>(age))</span></code></pre></div>
+<pre><code>## # A tibble: 18 × 3
+## # Groups:   sex [2]
+##    sex    neighborhood mean_age
+##    &lt;chr&gt;  &lt;chr&gt;           &lt;dbl&gt;
+##  1 Female Briqueterie      31.6
+##  2 Female Carriere         28.2
+##  3 Female Cité Verte       31.8
+##  4 Female Ekoudou          29.3
+##  5 Female Messa            30.2
+##  6 Female Mokolo           28.0
+##  7 Female Nkomkana         33.0
+##  8 Female Tsinga           30.6
+##  9 Female Tsinga Oliga     24.3
+## 10 Male   Briqueterie      33.7
+## 11 Male   Carriere         30.0
+## 12 Male   Cité Verte       27.0
+## 13 Male   Ekoudou          25.2
+## 14 Male   Messa            23.9
+## 15 Male   Mokolo           30.5
+## 16 Male   Nkomkana         29.8
+## 17 Male   Tsinga           28.8
+## 18 Male   Tsinga Oliga     24.3</code></pre>
 <hr />
 <ul>
 <li><p>The <strong>order</strong> in <code>group_by()</code> is
@@ -2101,7 +2119,37 @@ below:</p>
 </table>
 <div class="sourceCode" id="cb39"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" tabindex="-1"></a>Q_weight_by_sex_treatments <span class="ot">&lt;-</span> </span>
 <span id="cb39-2"><a href="#cb39-2" tabindex="-1"></a>  yao <span class="sc">%&gt;%</span></span>
-<span id="cb39-3"><a href="#cb39-3" tabindex="-1"></a>  ____________________________</span></code></pre></div>
+<span id="cb39-3"><a href="#cb39-3" tabindex="-1"></a>  <span class="fu">group_by</span>(sex, treatment_combinations) <span class="sc">%&gt;%</span> </span>
+<span id="cb39-4"><a href="#cb39-4" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">mean_weight_kg =</span> <span class="fu">mean</span>(weight_kg))</span>
+<span id="cb39-5"><a href="#cb39-5" tabindex="-1"></a></span>
+<span id="cb39-6"><a href="#cb39-6" tabindex="-1"></a>Q_weight_by_sex_treatments</span></code></pre></div>
+<pre><code>## # A tibble: 47 × 3
+## # Groups:   sex [2]
+##    sex    treatment_combinations                                  mean_weight_kg
+##    &lt;chr&gt;  &lt;chr&gt;                                                            &lt;dbl&gt;
+##  1 Female Antibiotics                                                       54.7
+##  2 Female Antibiotics--Other anti-inflamm.                                  67  
+##  3 Female Hydrocortisone                                                    59.7
+##  4 Female Other                                                             68  
+##  5 Female Other anti-inflamm.                                               71.5
+##  6 Female Paracetamol                                                       74.4
+##  7 Female Paracetamol--Antibiotics                                          69  
+##  8 Female Paracetamol--Antibiotics--Hydrocortisone--Other anti-i…           54  
+##  9 Female Paracetamol--Antibiotics--Other                                   65.9
+## 10 Female Paracetamol--Antibiotics--Other anti-inflamm.                     38.7
+## # ℹ 37 more rows</code></pre>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" tabindex="-1"></a><span class="fu">.CHECK_Q_weight_by_sex_treatments</span>()</span></code></pre></div>
+<pre><code>## Correct! You are delightful!
+##   1   2   3   4   5  ᐅ6ᐊ  7   8   9   10   11</code></pre>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" tabindex="-1"></a><span class="fu">.HINT_Q_weight_by_sex_treatments</span>()</span></code></pre></div>
+<pre><code>## 
+## HINT.
+## Your answer should look this: 
+## 
+## Q_weight_by_sex_treatments &lt;- 
+##   yao %&gt;% 
+##   group_by(VARIABLE1, VARIABLE2) %&gt;%
+##   summarize(mean_weight_kg = FORMULA_HERE)</code></pre>
 </div>
 <div class="practice">
 <p>Using the <code>yao</code> data frame, group your data by age
@@ -2130,9 +2178,39 @@ below:</p>
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb40"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" tabindex="-1"></a>Q_bedridden_by_age_sex_iggresult <span class="ot">&lt;-</span> </span>
-<span id="cb40-2"><a href="#cb40-2" tabindex="-1"></a>  yao <span class="sc">%&gt;%</span></span>
-<span id="cb40-3"><a href="#cb40-3" tabindex="-1"></a>  ____________________________</span></code></pre></div>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" tabindex="-1"></a>Q_bedridden_by_age_sex_iggresult <span class="ot">&lt;-</span> </span>
+<span id="cb45-2"><a href="#cb45-2" tabindex="-1"></a>  yao <span class="sc">%&gt;%</span></span>
+<span id="cb45-3"><a href="#cb45-3" tabindex="-1"></a>  <span class="fu">group_by</span>(age_category_3, sex, igg_result) <span class="sc">%&gt;%</span> </span>
+<span id="cb45-4"><a href="#cb45-4" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">mean_n_bedridden_days =</span> <span class="fu">mean</span>(n_bedridden_days, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb45-5"><a href="#cb45-5" tabindex="-1"></a>Q_bedridden_by_age_sex_iggresult</span></code></pre></div>
+<pre><code>## # A tibble: 12 × 4
+## # Groups:   age_category_3, sex [6]
+##    age_category_3 sex    igg_result mean_n_bedridden_days
+##    &lt;chr&gt;          &lt;chr&gt;  &lt;chr&gt;                      &lt;dbl&gt;
+##  1 Adult          Female Negative                   1.07 
+##  2 Adult          Female Positive                   0.976
+##  3 Adult          Male   Negative                   0.889
+##  4 Adult          Male   Positive                   1.59 
+##  5 Child          Female Negative                   0.731
+##  6 Child          Female Positive                   1.36 
+##  7 Child          Male   Negative                   1.44 
+##  8 Child          Male   Positive                   1.12 
+##  9 Senior         Female Negative                   1    
+## 10 Senior         Female Positive                   3    
+## 11 Senior         Male   Negative                   3    
+## 12 Senior         Male   Positive                   2</code></pre>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" tabindex="-1"></a><span class="fu">.CHECK_Q_bedridden_by_age_sex_iggresult</span>()</span></code></pre></div>
+<pre><code>## Correct! You are magnificent!
+##   1   2   3   4   5   6  ᐅ7ᐊ  8   9   10   11</code></pre>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" tabindex="-1"></a><span class="fu">.HINT_Q_bedridden_by_age_sex_iggresult</span>()</span></code></pre></div>
+<pre><code>## 
+## HINT.
+## Your answer should look this: 
+## 
+## Q_bedridden_by_age_sex_iggresult &lt;- 
+##   yao %&gt;% 
+##   group_by(VARIABLES) %&gt;%
+##   summarize(mean_n_bedridden_days = FORMULA_HERE)</code></pre>
 </div>
 <hr />
 </div>
@@ -2148,25 +2226,44 @@ further analysis.</p></li>
 </ul>
 <hr />
 <p>Let’s see what the output looks like when grouping by 1 variable:</p>
-<div class="sourceCode" id="cb41"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" tabindex="-1"></a>yao <span class="sc">%&gt;%</span> </span>
-<span id="cb41-2"><a href="#cb41-2" tabindex="-1"></a>  <span class="co"># we group by sex</span></span>
-<span id="cb41-3"><a href="#cb41-3" tabindex="-1"></a>  <span class="fu">group_by</span>(_____) <span class="sc">%&gt;%</span> </span>
-<span id="cb41-4"><a href="#cb41-4" tabindex="-1"></a>  <span class="co"># and calculate the mean age</span></span>
-<span id="cb41-5"><a href="#cb41-5" tabindex="-1"></a>  <span class="fu">summarize</span>(_____________________________________________)</span></code></pre></div>
-<pre><code>## Error in parse(text = input): &lt;text&gt;:3:13: unexpected input
-## 2:   # we group by sex
-## 3:   group_by(__
-##                ^</code></pre>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" tabindex="-1"></a>yao <span class="sc">%&gt;%</span> </span>
+<span id="cb51-2"><a href="#cb51-2" tabindex="-1"></a>  <span class="co"># we group by sex</span></span>
+<span id="cb51-3"><a href="#cb51-3" tabindex="-1"></a>  <span class="fu">group_by</span>(sex) <span class="sc">%&gt;%</span> </span>
+<span id="cb51-4"><a href="#cb51-4" tabindex="-1"></a>  <span class="co"># and calculate the mean age</span></span>
+<span id="cb51-5"><a href="#cb51-5" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">mean_age =</span> <span class="fu">mean</span>(age))</span></code></pre></div>
+<pre><code>## # A tibble: 2 × 2
+##   sex    mean_age
+##   &lt;chr&gt;     &lt;dbl&gt;
+## 1 Female     29.5
+## 2 Male       28.4</code></pre>
 <hr />
 <p>Now let’s consider grouping by two variables:</p>
-<div class="sourceCode" id="cb43"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" tabindex="-1"></a>yao <span class="sc">%&gt;%</span></span>
-<span id="cb43-2"><a href="#cb43-2" tabindex="-1"></a>  <span class="co"># we group by sex and neighborhood</span></span>
-<span id="cb43-3"><a href="#cb43-3" tabindex="-1"></a>  <span class="fu">group_by</span>(_____________________) <span class="sc">%&gt;%</span> </span>
-<span id="cb43-4"><a href="#cb43-4" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">mean_age =</span> <span class="fu">mean</span>(age))</span></code></pre></div>
-<pre><code>## Error in parse(text = input): &lt;text&gt;:3:13: unexpected input
-## 2:   # we group by sex and neighborhood
-## 3:   group_by(__
-##                ^</code></pre>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" tabindex="-1"></a>yao <span class="sc">%&gt;%</span></span>
+<span id="cb53-2"><a href="#cb53-2" tabindex="-1"></a>  <span class="co"># we group by sex and neighborhood</span></span>
+<span id="cb53-3"><a href="#cb53-3" tabindex="-1"></a>  <span class="fu">group_by</span>(sex, neighborhood) <span class="sc">%&gt;%</span> </span>
+<span id="cb53-4"><a href="#cb53-4" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">mean_age =</span> <span class="fu">mean</span>(age))</span></code></pre></div>
+<pre><code>## # A tibble: 18 × 3
+## # Groups:   sex [2]
+##    sex    neighborhood mean_age
+##    &lt;chr&gt;  &lt;chr&gt;           &lt;dbl&gt;
+##  1 Female Briqueterie      31.6
+##  2 Female Carriere         28.2
+##  3 Female Cité Verte       31.8
+##  4 Female Ekoudou          29.3
+##  5 Female Messa            30.2
+##  6 Female Mokolo           28.0
+##  7 Female Nkomkana         33.0
+##  8 Female Tsinga           30.6
+##  9 Female Tsinga Oliga     24.3
+## 10 Male   Briqueterie      33.7
+## 11 Male   Carriere         30.0
+## 12 Male   Cité Verte       27.0
+## 13 Male   Ekoudou          25.2
+## 14 Male   Messa            23.9
+## 15 Male   Mokolo           30.5
+## 16 Male   Nkomkana         29.8
+## 17 Male   Tsinga           28.8
+## 18 Male   Tsinga Oliga     24.3</code></pre>
 <p>The data is still grouped by the first variable in
 <code>group_by()</code>, sex !</p>
 <pre><code>  # A tibble: 18 × 3
@@ -2179,15 +2276,33 @@ further analysis.</p></li>
 other {dplyr} verbs.</p></li>
 <li><p>Let’s see what happens with <code>select()</code> !</p></li>
 </ul>
-<div class="sourceCode" id="cb46"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" tabindex="-1"></a>yao <span class="sc">%&gt;%</span> </span>
-<span id="cb46-2"><a href="#cb46-2" tabindex="-1"></a>  <span class="fu">group_by</span>(sex, neighborhood) <span class="sc">%&gt;%</span> </span>
-<span id="cb46-3"><a href="#cb46-3" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">mean_age =</span> <span class="fu">mean</span>(age)) <span class="sc">%&gt;%</span> </span>
-<span id="cb46-4"><a href="#cb46-4" tabindex="-1"></a>  <span class="co"># let&#39;s select mean_age</span></span>
-<span id="cb46-5"><a href="#cb46-5" tabindex="-1"></a>  <span class="fu">select</span>(____________) <span class="co"># doesn&#39;t work as expected </span></span></code></pre></div>
-<pre><code>## Error in parse(text = input): &lt;text&gt;:5:11: unexpected input
-## 4:   # let&#39;s select mean_age
-## 5:   select(__
-##              ^</code></pre>
+<div class="sourceCode" id="cb56"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" tabindex="-1"></a>yao <span class="sc">%&gt;%</span> </span>
+<span id="cb56-2"><a href="#cb56-2" tabindex="-1"></a>  <span class="fu">group_by</span>(sex, neighborhood) <span class="sc">%&gt;%</span> </span>
+<span id="cb56-3"><a href="#cb56-3" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">mean_age =</span> <span class="fu">mean</span>(age)) <span class="sc">%&gt;%</span> </span>
+<span id="cb56-4"><a href="#cb56-4" tabindex="-1"></a>  <span class="co"># let&#39;s select mean_age</span></span>
+<span id="cb56-5"><a href="#cb56-5" tabindex="-1"></a>  <span class="fu">select</span>(mean_age) <span class="co"># doesn&#39;t work as expected </span></span></code></pre></div>
+<pre><code>## # A tibble: 18 × 2
+## # Groups:   sex [2]
+##    sex    mean_age
+##    &lt;chr&gt;     &lt;dbl&gt;
+##  1 Female     31.6
+##  2 Female     28.2
+##  3 Female     31.8
+##  4 Female     29.3
+##  5 Female     30.2
+##  6 Female     28.0
+##  7 Female     33.0
+##  8 Female     30.6
+##  9 Female     24.3
+## 10 Male       33.7
+## 11 Male       30.0
+## 12 Male       27.0
+## 13 Male       25.2
+## 14 Male       23.9
+## 15 Male       30.5
+## 16 Male       29.8
+## 17 Male       28.8
+## 18 Male       24.3</code></pre>
 <hr />
 <ul>
 <li><p>Other dplyr verbs like <code>filter()</code>,
@@ -2197,27 +2312,61 @@ ways on grouped data.</p></li>
 <li><p>So let’s learn to <strong>ungroup</strong></p></li>
 </ul>
 <hr />
-<div class="sourceCode" id="cb48"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" tabindex="-1"></a>yao <span class="sc">%&gt;%</span> </span>
-<span id="cb48-2"><a href="#cb48-2" tabindex="-1"></a>  <span class="fu">group_by</span>(sex, neighborhood) <span class="sc">%&gt;%</span> </span>
-<span id="cb48-3"><a href="#cb48-3" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">mean_age =</span> <span class="fu">mean</span>(age)) <span class="sc">%&gt;%</span> </span>
-<span id="cb48-4"><a href="#cb48-4" tabindex="-1"></a>  <span class="co"># ungroup</span></span>
-<span id="cb48-5"><a href="#cb48-5" tabindex="-1"></a>  ____________</span></code></pre></div>
-<pre><code>## Error in parse(text = input): &lt;text&gt;:5:4: unexpected input
-## 4:   # ungroup
-## 5:   __
-##       ^</code></pre>
+<div class="sourceCode" id="cb58"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" tabindex="-1"></a>yao <span class="sc">%&gt;%</span> </span>
+<span id="cb58-2"><a href="#cb58-2" tabindex="-1"></a>  <span class="fu">group_by</span>(sex, neighborhood) <span class="sc">%&gt;%</span> </span>
+<span id="cb58-3"><a href="#cb58-3" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">mean_age =</span> <span class="fu">mean</span>(age)) <span class="sc">%&gt;%</span> </span>
+<span id="cb58-4"><a href="#cb58-4" tabindex="-1"></a>  <span class="co"># ungroup</span></span>
+<span id="cb58-5"><a href="#cb58-5" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span></code></pre></div>
+<pre><code>## # A tibble: 18 × 3
+##    sex    neighborhood mean_age
+##    &lt;chr&gt;  &lt;chr&gt;           &lt;dbl&gt;
+##  1 Female Briqueterie      31.6
+##  2 Female Carriere         28.2
+##  3 Female Cité Verte       31.8
+##  4 Female Ekoudou          29.3
+##  5 Female Messa            30.2
+##  6 Female Mokolo           28.0
+##  7 Female Nkomkana         33.0
+##  8 Female Tsinga           30.6
+##  9 Female Tsinga Oliga     24.3
+## 10 Male   Briqueterie      33.7
+## 11 Male   Carriere         30.0
+## 12 Male   Cité Verte       27.0
+## 13 Male   Ekoudou          25.2
+## 14 Male   Messa            23.9
+## 15 Male   Mokolo           30.5
+## 16 Male   Nkomkana         29.8
+## 17 Male   Tsinga           28.8
+## 18 Male   Tsinga Oliga     24.3</code></pre>
 <p>Now we can try selecting again:</p>
-<div class="sourceCode" id="cb50"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" tabindex="-1"></a>yao <span class="sc">%&gt;%</span> </span>
-<span id="cb50-2"><a href="#cb50-2" tabindex="-1"></a>  <span class="fu">group_by</span>(sex, neighborhood) <span class="sc">%&gt;%</span> </span>
-<span id="cb50-3"><a href="#cb50-3" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">mean_age =</span> <span class="fu">mean</span>(age)) <span class="sc">%&gt;%</span> </span>
-<span id="cb50-4"><a href="#cb50-4" tabindex="-1"></a>  <span class="co"># ungroup</span></span>
-<span id="cb50-5"><a href="#cb50-5" tabindex="-1"></a>  ____________</span>
-<span id="cb50-6"><a href="#cb50-6" tabindex="-1"></a>  <span class="co"># select: it behaves normally !</span></span>
-<span id="cb50-7"><a href="#cb50-7" tabindex="-1"></a>  ____________</span></code></pre></div>
-<pre><code>## Error in parse(text = input): &lt;text&gt;:5:4: unexpected input
-## 4:   # ungroup
-## 5:   __
-##       ^</code></pre>
+<div class="sourceCode" id="cb60"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" tabindex="-1"></a>yao <span class="sc">%&gt;%</span> </span>
+<span id="cb60-2"><a href="#cb60-2" tabindex="-1"></a>  <span class="fu">group_by</span>(sex, neighborhood) <span class="sc">%&gt;%</span> </span>
+<span id="cb60-3"><a href="#cb60-3" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">mean_age =</span> <span class="fu">mean</span>(age)) <span class="sc">%&gt;%</span> </span>
+<span id="cb60-4"><a href="#cb60-4" tabindex="-1"></a>  <span class="co"># ungroup</span></span>
+<span id="cb60-5"><a href="#cb60-5" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb60-6"><a href="#cb60-6" tabindex="-1"></a>  <span class="co"># select: it behaves normally !</span></span>
+<span id="cb60-7"><a href="#cb60-7" tabindex="-1"></a>  <span class="fu">select</span>(mean_age)</span></code></pre></div>
+<pre><code>## # A tibble: 18 × 1
+##    mean_age
+##       &lt;dbl&gt;
+##  1     31.6
+##  2     28.2
+##  3     31.8
+##  4     29.3
+##  5     30.2
+##  6     28.0
+##  7     33.0
+##  8     30.6
+##  9     24.3
+## 10     33.7
+## 11     30.0
+## 12     27.0
+## 13     25.2
+## 14     23.9
+## 15     30.5
+## 16     29.8
+## 17     28.8
+## 18     24.3</code></pre>
 <hr />
 </div>
 <div id="counting-rows" class="section level2" number="8">
@@ -2234,27 +2383,36 @@ RStudio</p>
 <li><p>For example, we can count how many individuals are in each
 neighborhood group.</p></li>
 </ul>
-<div class="sourceCode" id="cb52"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" tabindex="-1"></a>yao <span class="sc">%&gt;%</span> </span>
-<span id="cb52-2"><a href="#cb52-2" tabindex="-1"></a>  <span class="co"># we group by neighborhood</span></span>
-<span id="cb52-3"><a href="#cb52-3" tabindex="-1"></a>  <span class="fu">group_by</span>(__________________) <span class="sc">%&gt;%</span> </span>
-<span id="cb52-4"><a href="#cb52-4" tabindex="-1"></a>  <span class="co"># and create a count using the n() function</span></span>
-<span id="cb52-5"><a href="#cb52-5" tabindex="-1"></a>  <span class="fu">summarize</span>(__________________)</span></code></pre></div>
-<pre><code>## Error in parse(text = input): &lt;text&gt;:3:13: unexpected input
-## 2:   # we group by neighborhood
-## 3:   group_by(__
-##                ^</code></pre>
+<div class="sourceCode" id="cb62"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" tabindex="-1"></a>yao <span class="sc">%&gt;%</span> </span>
+<span id="cb62-2"><a href="#cb62-2" tabindex="-1"></a>  <span class="co"># we group by neighborhood</span></span>
+<span id="cb62-3"><a href="#cb62-3" tabindex="-1"></a>  <span class="fu">group_by</span>(neighborhood) <span class="sc">%&gt;%</span> </span>
+<span id="cb62-4"><a href="#cb62-4" tabindex="-1"></a>  <span class="co"># and create a count using the n() function</span></span>
+<span id="cb62-5"><a href="#cb62-5" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">count =</span> <span class="fu">n</span>())</span></code></pre></div>
+<pre><code>## # A tibble: 9 × 2
+##   neighborhood count
+##   &lt;chr&gt;        &lt;int&gt;
+## 1 Briqueterie    106
+## 2 Carriere       236
+## 3 Cité Verte      72
+## 4 Ekoudou        190
+## 5 Messa           48
+## 6 Mokolo          96
+## 7 Nkomkana        75
+## 8 Tsinga          81
+## 9 Tsinga Oliga    67</code></pre>
 <hr />
 <p>We can also calculate another summary statistic at the same time:</p>
-<div class="sourceCode" id="cb54"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" tabindex="-1"></a>yao <span class="sc">%&gt;%</span> </span>
-<span id="cb54-2"><a href="#cb54-2" tabindex="-1"></a>  <span class="co"># group by neighborhood</span></span>
-<span id="cb54-3"><a href="#cb54-3" tabindex="-1"></a>  <span class="fu">group_by</span>(neighborhood) <span class="sc">%&gt;%</span> </span>
-<span id="cb54-4"><a href="#cb54-4" tabindex="-1"></a>  <span class="co"># let&#39;s make a count and a mean </span></span>
-<span id="cb54-5"><a href="#cb54-5" tabindex="-1"></a>  <span class="fu">summarize</span>(__________________</span>
-<span id="cb54-6"><a href="#cb54-6" tabindex="-1"></a>            __________________)</span></code></pre></div>
-<pre><code>## Error in parse(text = input): &lt;text&gt;:5:14: unexpected input
-## 4:   # let&#39;s make a count and a mean 
-## 5:   summarize(__
-##                 ^</code></pre>
+<div class="sourceCode" id="cb64"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" tabindex="-1"></a>yao <span class="sc">%&gt;%</span> </span>
+<span id="cb64-2"><a href="#cb64-2" tabindex="-1"></a>  <span class="co"># group by neighborhood</span></span>
+<span id="cb64-3"><a href="#cb64-3" tabindex="-1"></a>  <span class="fu">group_by</span>(igg_result) <span class="sc">%&gt;%</span> </span>
+<span id="cb64-4"><a href="#cb64-4" tabindex="-1"></a>  <span class="co"># let&#39;s make a count and a mean </span></span>
+<span id="cb64-5"><a href="#cb64-5" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">count =</span> <span class="fu">n</span>(),</span>
+<span id="cb64-6"><a href="#cb64-6" tabindex="-1"></a>            <span class="at">mean =</span> <span class="fu">mean</span>(age))</span></code></pre></div>
+<pre><code>## # A tibble: 2 × 3
+##   igg_result count  mean
+##   &lt;chr&gt;      &lt;int&gt; &lt;dbl&gt;
+## 1 Negative     669  28.4
+## 2 Positive     302  30.4</code></pre>
 <hr />
 <p>PRACTICE TIME !</p>
 <div class="practice">
@@ -2281,9 +2439,27 @@ below:</p>
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb56"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" tabindex="-1"></a>Q_occupation_summary <span class="ot">&lt;-</span> </span>
-<span id="cb56-2"><a href="#cb56-2" tabindex="-1"></a>  yao <span class="sc">%&gt;%</span></span>
-<span id="cb56-3"><a href="#cb56-3" tabindex="-1"></a>  ____________________________</span></code></pre></div>
+<div class="sourceCode" id="cb66"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" tabindex="-1"></a>Q_occupation_summary <span class="ot">&lt;-</span> </span>
+<span id="cb66-2"><a href="#cb66-2" tabindex="-1"></a>  yao <span class="sc">%&gt;%</span></span>
+<span id="cb66-3"><a href="#cb66-3" tabindex="-1"></a>  <span class="fu">group_by</span>(occupation) <span class="sc">%&gt;%</span> </span>
+<span id="cb66-4"><a href="#cb66-4" tabindex="-1"></a>  <span class="fu">summarize</span>( <span class="at">count =</span> <span class="fu">n</span>(),</span>
+<span id="cb66-5"><a href="#cb66-5" tabindex="-1"></a>             <span class="at">mean_n_days_miss_work  =</span> <span class="fu">mean</span>(n_days_miss_work, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb66-6"><a href="#cb66-6" tabindex="-1"></a>Q_occupation_summary</span></code></pre></div>
+<pre><code>## # A tibble: 28 × 3
+##    occupation                          count mean_n_days_miss_work
+##    &lt;chr&gt;                               &lt;int&gt;                 &lt;dbl&gt;
+##  1 Farmer                                  5                 0    
+##  2 Farmer--Other                           1                 2    
+##  3 Home-maker                             65                 0.929
+##  4 Home-maker--Farmer                      2               NaN    
+##  5 Home-maker--Informal worker             3               NaN    
+##  6 Home-maker--Informal worker--Farmer     1               NaN    
+##  7 Home-maker--Trader                      3                 0    
+##  8 Informal worker                       189                 2.17 
+##  9 Informal worker--Other                  2                 0    
+## 10 Informal worker--Trader                 4                 0    
+## # ℹ 18 more rows</code></pre>
+<div class="sourceCode" id="cb68"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" tabindex="-1"></a><span class="do">##You are getting NaN (Not a Number) because you are calculating a mean() on groups where every single value in that group is NA.</span></span></code></pre></div>
 </div>
 <hr />
 <div id="counting-rows-that-meet-a-condition" class="section level3" number="8.1">
@@ -2293,29 +2469,45 @@ meet a condition</h3>
 <li>We can <strong>place a condition within</strong> the
 <code>sum()</code> function.</li>
 </ul>
-<div class="sourceCode" id="cb57"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" tabindex="-1"></a>yao <span class="sc">%&gt;%</span> </span>
-<span id="cb57-2"><a href="#cb57-2" tabindex="-1"></a>  <span class="co"># group by neighborhood</span></span>
-<span id="cb57-3"><a href="#cb57-3" tabindex="-1"></a>  <span class="fu">group_by</span>(__________________) <span class="sc">%&gt;%</span> </span>
-<span id="cb57-4"><a href="#cb57-4" tabindex="-1"></a>  <span class="co"># let&#39;s count only those under 18</span></span>
-<span id="cb57-5"><a href="#cb57-5" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">count_under_18 =</span> __________________)</span></code></pre></div>
-<pre><code>## Error in parse(text = input): &lt;text&gt;:3:13: unexpected input
-## 2:   # group by neighborhood
-## 3:   group_by(__
-##                ^</code></pre>
+<div class="sourceCode" id="cb69"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" tabindex="-1"></a>yao <span class="sc">%&gt;%</span> </span>
+<span id="cb69-2"><a href="#cb69-2" tabindex="-1"></a>  <span class="co"># group by neighborhood</span></span>
+<span id="cb69-3"><a href="#cb69-3" tabindex="-1"></a>  <span class="fu">group_by</span>(neighborhood) <span class="sc">%&gt;%</span> </span>
+<span id="cb69-4"><a href="#cb69-4" tabindex="-1"></a>  <span class="co"># let&#39;s count only those under 18</span></span>
+<span id="cb69-5"><a href="#cb69-5" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">count_under_18 =</span> <span class="fu">sum</span>(age<span class="sc">&lt;</span><span class="dv">18</span>) )</span></code></pre></div>
+<pre><code>## # A tibble: 9 × 2
+##   neighborhood count_under_18
+##   &lt;chr&gt;                 &lt;int&gt;
+## 1 Briqueterie              28
+## 2 Carriere                 58
+## 3 Cité Verte               19
+## 4 Ekoudou                  66
+## 5 Messa                    18
+## 6 Mokolo                   32
+## 7 Nkomkana                 22
+## 8 Tsinga                   23
+## 9 Tsinga Oliga             25</code></pre>
 <hr />
 <ul>
 <li><p>Another example !</p></li>
 <li><p>Let’s count the number of people with doctorate degrees in each
 neighborhood</p></li>
 </ul>
-<div class="sourceCode" id="cb59"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" tabindex="-1"></a>yao <span class="sc">%&gt;%</span> </span>
-<span id="cb59-2"><a href="#cb59-2" tabindex="-1"></a>  <span class="fu">group_by</span>(neighborhood) <span class="sc">%&gt;%</span> </span>
-<span id="cb59-3"><a href="#cb59-3" tabindex="-1"></a>  <span class="co"># let&#39;s place a condition on the highest_education variable</span></span>
-<span id="cb59-4"><a href="#cb59-4" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">count_with_doctorates =</span> __________________)</span></code></pre></div>
-<pre><code>## Error in parse(text = input): &lt;text&gt;:4:38: unexpected input
-## 3:   # let&#39;s place a condition on the highest_education variable
-## 4:   summarize(count_with_doctorates = __
-##                                         ^</code></pre>
+<div class="sourceCode" id="cb71"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" tabindex="-1"></a>yao <span class="sc">%&gt;%</span> </span>
+<span id="cb71-2"><a href="#cb71-2" tabindex="-1"></a>  <span class="fu">group_by</span>(neighborhood) <span class="sc">%&gt;%</span> </span>
+<span id="cb71-3"><a href="#cb71-3" tabindex="-1"></a>  <span class="co"># let&#39;s place a condition on the highest_education variable</span></span>
+<span id="cb71-4"><a href="#cb71-4" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">count_with_doctorates =</span> <span class="fu">sum</span>(highest_education <span class="sc">==</span> <span class="st">&quot;Doctorate&quot;</span>))</span></code></pre></div>
+<pre><code>## # A tibble: 9 × 2
+##   neighborhood count_with_doctorates
+##   &lt;chr&gt;                        &lt;int&gt;
+## 1 Briqueterie                      2
+## 2 Carriere                         1
+## 3 Cité Verte                       1
+## 4 Ekoudou                          1
+## 5 Messa                            2
+## 6 Mokolo                           0
+## 7 Nkomkana                         4
+## 8 Tsinga                           3
+## 9 Tsinga Oliga                     3</code></pre>
 <hr />
 <ul>
 <li><p>Final example of counting with conditions.</p></li>
@@ -2325,22 +2517,40 @@ received by people with COVID-like symptoms.</p></li>
 <li><p>We will count the number of people who received <em>no
 treatment.</em></p></li>
 </ul>
-<div class="sourceCode" id="cb61"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" tabindex="-1"></a>yao <span class="sc">%&gt;%</span> </span>
-<span id="cb61-2"><a href="#cb61-2" tabindex="-1"></a>  <span class="co"># let&#39;s have a quick look at the treatment variable</span></span>
-<span id="cb61-3"><a href="#cb61-3" tabindex="-1"></a>  <span class="fu">select</span>(__________________)</span></code></pre></div>
-<pre><code>## Error in parse(text = input): &lt;text&gt;:3:11: unexpected input
-## 2:   # let&#39;s have a quick look at the treatment variable
-## 3:   select(__
-##              ^</code></pre>
-<div class="sourceCode" id="cb63"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" tabindex="-1"></a>yao <span class="sc">%&gt;%</span> </span>
-<span id="cb63-2"><a href="#cb63-2" tabindex="-1"></a>  <span class="co"># let&#39;s group by neighborhood</span></span>
-<span id="cb63-3"><a href="#cb63-3" tabindex="-1"></a>  <span class="fu">group_by</span>(neighborhood) <span class="sc">%&gt;%</span> </span>
-<span id="cb63-4"><a href="#cb63-4" tabindex="-1"></a>  <span class="co"># let&#39;s set a condition on the NA to count the no treatments</span></span>
-<span id="cb63-5"><a href="#cb63-5" tabindex="-1"></a>  <span class="fu">summarize</span>(____________________________________)</span></code></pre></div>
-<pre><code>## Error in parse(text = input): &lt;text&gt;:5:14: unexpected input
-## 4:   # let&#39;s set a condition on the NA to count the no treatments
-## 5:   summarize(__
-##                 ^</code></pre>
+<div class="sourceCode" id="cb73"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1" tabindex="-1"></a>yao <span class="sc">%&gt;%</span> </span>
+<span id="cb73-2"><a href="#cb73-2" tabindex="-1"></a>  <span class="co"># let&#39;s have a quick look at the treatment variable</span></span>
+<span id="cb73-3"><a href="#cb73-3" tabindex="-1"></a>  <span class="fu">select</span>(treatment_combinations, neighborhood)</span></code></pre></div>
+<pre><code>## # A tibble: 971 × 2
+##    treatment_combinations         neighborhood
+##    &lt;chr&gt;                          &lt;chr&gt;       
+##  1 Paracetamol                    Briqueterie 
+##  2 &lt;NA&gt;                           Briqueterie 
+##  3 &lt;NA&gt;                           Briqueterie 
+##  4 Antibiotics                    Briqueterie 
+##  5 &lt;NA&gt;                           Briqueterie 
+##  6 Paracetamol--Antibiotics       Briqueterie 
+##  7 Traditional meds.              Briqueterie 
+##  8 Paracetamol                    Briqueterie 
+##  9 Paracetamol--Traditional meds. Briqueterie 
+## 10 &lt;NA&gt;                           Briqueterie 
+## # ℹ 961 more rows</code></pre>
+<div class="sourceCode" id="cb75"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb75-1"><a href="#cb75-1" tabindex="-1"></a>yao <span class="sc">%&gt;%</span> </span>
+<span id="cb75-2"><a href="#cb75-2" tabindex="-1"></a>  <span class="co"># let&#39;s group by neighborhood</span></span>
+<span id="cb75-3"><a href="#cb75-3" tabindex="-1"></a>  <span class="fu">group_by</span>(neighborhood) <span class="sc">%&gt;%</span> </span>
+<span id="cb75-4"><a href="#cb75-4" tabindex="-1"></a>  <span class="co"># let&#39;s set a condition on the NA to count the no treatments</span></span>
+<span id="cb75-5"><a href="#cb75-5" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">no_treatments =</span> <span class="fu">sum</span>(<span class="fu">is.na</span>(treatment_combinations))) </span></code></pre></div>
+<pre><code>## # A tibble: 9 × 2
+##   neighborhood no_treatments
+##   &lt;chr&gt;                &lt;int&gt;
+## 1 Briqueterie             82
+## 2 Carriere               192
+## 3 Cité Verte              46
+## 4 Ekoudou                133
+## 5 Messa                   35
+## 6 Mokolo                  65
+## 7 Nkomkana                53
+## 8 Tsinga                  56
+## 9 Tsinga Oliga            47</code></pre>
 <hr />
 <p>PLEASE SKIP THE PRACTICE QUESTION ON CHECKING SYMPTOMS FOR ADULTS. WE
 DECIDED TO REMOVE IT.</p>
@@ -2355,14 +2565,14 @@ DECIDED TO REMOVE IT.</p>
 group</strong>.</p></li>
 <li><p>Let’s count our <code>occupation</code> variable.</p></li>
 </ul>
-<div class="sourceCode" id="cb65"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" tabindex="-1"></a>yao <span class="sc">%&gt;%</span> _________________________</span></code></pre></div>
+<div class="sourceCode" id="cb77"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb77-1"><a href="#cb77-1" tabindex="-1"></a>yao <span class="sc">%&gt;%</span> _________________________</span></code></pre></div>
 <pre><code>## Error in parse(text = input): &lt;text&gt;:1:10: unexpected input
 ## 1: yao %&gt;% __
 ##              ^</code></pre>
 <p>Note that this is the same output as:</p>
-<div class="sourceCode" id="cb67"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" tabindex="-1"></a>yao <span class="sc">%&gt;%</span></span>
-<span id="cb67-2"><a href="#cb67-2" tabindex="-1"></a>  <span class="fu">group_by</span>(occupation) <span class="sc">%&gt;%</span></span>
-<span id="cb67-3"><a href="#cb67-3" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">n =</span> <span class="fu">n</span>())</span></code></pre></div>
+<div class="sourceCode" id="cb79"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb79-1"><a href="#cb79-1" tabindex="-1"></a>yao <span class="sc">%&gt;%</span></span>
+<span id="cb79-2"><a href="#cb79-2" tabindex="-1"></a>  <span class="fu">group_by</span>(occupation) <span class="sc">%&gt;%</span></span>
+<span id="cb79-3"><a href="#cb79-3" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">n =</span> <span class="fu">n</span>()) </span></code></pre></div>
 <pre><code>## # A tibble: 28 × 2
 ##    occupation                              n
 ##    &lt;chr&gt;                               &lt;int&gt;
@@ -2380,13 +2590,23 @@ group</strong>.</p></li>
 <hr />
 <p>You can also apply <code>dplyr::count()</code> in a nested
 fashion:</p>
-<div class="sourceCode" id="cb69"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" tabindex="-1"></a>yao <span class="sc">%&gt;%</span></span>
-<span id="cb69-2"><a href="#cb69-2" tabindex="-1"></a>  <span class="co"># let&#39;s count by sex and occupation</span></span>
-<span id="cb69-3"><a href="#cb69-3" tabindex="-1"></a>  <span class="fu">count</span>(_________________________)</span></code></pre></div>
-<pre><code>## Error in parse(text = input): &lt;text&gt;:3:10: unexpected input
-## 2:   # let&#39;s count by sex and occupation
-## 3:   count(__
-##             ^</code></pre>
+<div class="sourceCode" id="cb81"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb81-1"><a href="#cb81-1" tabindex="-1"></a>yao <span class="sc">%&gt;%</span></span>
+<span id="cb81-2"><a href="#cb81-2" tabindex="-1"></a>  <span class="co"># let&#39;s count by sex and occupation</span></span>
+<span id="cb81-3"><a href="#cb81-3" tabindex="-1"></a><span class="fu">count</span>(sex, occupation, <span class="at">name =</span> <span class="st">&quot;count&quot;</span>)</span></code></pre></div>
+<pre><code>## # A tibble: 40 × 3
+##    sex    occupation                          count
+##    &lt;chr&gt;  &lt;chr&gt;                               &lt;int&gt;
+##  1 Female Farmer                                  3
+##  2 Female Home-maker                             65
+##  3 Female Home-maker--Farmer                      2
+##  4 Female Home-maker--Informal worker             3
+##  5 Female Home-maker--Informal worker--Farmer     1
+##  6 Female Home-maker--Trader                      3
+##  7 Female Informal worker                        77
+##  8 Female Informal worker--Trader                 1
+##  9 Female No response                             8
+## 10 Female Other                                   6
+## # ℹ 30 more rows</code></pre>
 <hr />
 <p>PRACTICE TIME !</p>
 <div class="practice">
@@ -2417,9 +2637,10 @@ below:</p>
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb71"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" tabindex="-1"></a>Q_count_iggresults_stratified_by_sex_agecategories <span class="ot">&lt;-</span> </span>
-<span id="cb71-2"><a href="#cb71-2" tabindex="-1"></a>  yao <span class="sc">%&gt;%</span></span>
-<span id="cb71-3"><a href="#cb71-3" tabindex="-1"></a>  ____________________________</span></code></pre></div>
+<div class="sourceCode" id="cb83"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb83-1"><a href="#cb83-1" tabindex="-1"></a>Q_count_iggresults_stratified_by_sex_agecategories <span class="ot">&lt;-</span> </span>
+<span id="cb83-2"><a href="#cb83-2" tabindex="-1"></a>  yao <span class="sc">%&gt;%</span></span>
+<span id="cb83-3"><a href="#cb83-3" tabindex="-1"></a>  <span class="fu">count</span>(sex, age_category_3, igg_result)</span>
+<span id="cb83-4"><a href="#cb83-4" tabindex="-1"></a>Q_count_iggresults_stratified_by_sex_agecategories</span></code></pre></div>
 <p>Using the <code>yao</code> data frame, count the different
 combinations of age categories (<code>age_category_3</code>) and number
 of bedridden days (<code>n_bedridden_days</code>).</p>
@@ -2441,9 +2662,11 @@ below:</p>
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb72"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" tabindex="-1"></a>Q_count_bedridden_age_categories <span class="ot">&lt;-</span> </span>
-<span id="cb72-2"><a href="#cb72-2" tabindex="-1"></a>  yao <span class="sc">%&gt;%</span></span>
-<span id="cb72-3"><a href="#cb72-3" tabindex="-1"></a>  ____________________________</span></code></pre></div>
+<div class="sourceCode" id="cb84"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb84-1"><a href="#cb84-1" tabindex="-1"></a>Q_count_bedridden_age_categories <span class="ot">&lt;-</span> </span>
+<span id="cb84-2"><a href="#cb84-2" tabindex="-1"></a>  yao <span class="sc">%&gt;%</span></span>
+<span id="cb84-3"><a href="#cb84-3" tabindex="-1"></a>  <span class="fu">count</span>(age_category_3, n_bedridden_days)</span>
+<span id="cb84-4"><a href="#cb84-4" tabindex="-1"></a></span>
+<span id="cb84-5"><a href="#cb84-5" tabindex="-1"></a>Q_count_bedridden_age_categories</span></code></pre></div>
 </div>
 <hr />
 </div>
@@ -2467,35 +2690,43 @@ this.</p></li>
 <li><p>We artificially drop all male children from the <code>yao</code>
 data frame.</p></li>
 </ul>
-<div class="sourceCode" id="cb73"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1" tabindex="-1"></a>yao_no_male_children <span class="ot">&lt;-</span> </span>
-<span id="cb73-2"><a href="#cb73-2" tabindex="-1"></a>  yao <span class="sc">%&gt;%</span> </span>
-<span id="cb73-3"><a href="#cb73-3" tabindex="-1"></a>  <span class="co"># we leave out all male children</span></span>
-<span id="cb73-4"><a href="#cb73-4" tabindex="-1"></a>  <span class="fu">filter</span>(_______________________________)</span></code></pre></div>
-<pre><code>## Error in parse(text = input): &lt;text&gt;:4:11: unexpected input
-## 3:   # we leave out all male children
-## 4:   filter(__
-##              ^</code></pre>
+<div class="sourceCode" id="cb85"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb85-1"><a href="#cb85-1" tabindex="-1"></a>yao_no_male_children <span class="ot">&lt;-</span> </span>
+<span id="cb85-2"><a href="#cb85-2" tabindex="-1"></a>  yao <span class="sc">%&gt;%</span> </span>
+<span id="cb85-3"><a href="#cb85-3" tabindex="-1"></a>  <span class="co"># we leave out all male children</span></span>
+<span id="cb85-4"><a href="#cb85-4" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span>(age_category_3<span class="sc">==</span><span class="st">&quot;Child&quot;</span> <span class="sc">&amp;</span> sex <span class="sc">==</span> <span class="st">&quot;Male&quot;</span>))</span></code></pre></div>
 <p>Let’s see the missing combination:</p>
-<div class="sourceCode" id="cb75"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb75-1"><a href="#cb75-1" tabindex="-1"></a>yao_no_male_children <span class="sc">%&gt;%</span> </span>
-<span id="cb75-2"><a href="#cb75-2" tabindex="-1"></a>  <span class="co"># let&#39;s group by sex and age_category_3  </span></span>
-<span id="cb75-3"><a href="#cb75-3" tabindex="-1"></a>  <span class="fu">group_by</span>(_______________________________) <span class="sc">%&gt;%</span> </span>
-<span id="cb75-4"><a href="#cb75-4" tabindex="-1"></a>  <span class="co"># let&#39;s get the number of individuals</span></span>
-<span id="cb75-5"><a href="#cb75-5" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">number_of_individuals =</span> _______________________________)</span></code></pre></div>
-<pre><code>## Error in parse(text = input): &lt;text&gt;:3:13: unexpected input
-## 2:   # let&#39;s group by sex and age_category_3  
-## 3:   group_by(__
-##                ^</code></pre>
+<div class="sourceCode" id="cb86"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb86-1"><a href="#cb86-1" tabindex="-1"></a>yao_no_male_children <span class="sc">%&gt;%</span> </span>
+<span id="cb86-2"><a href="#cb86-2" tabindex="-1"></a>  <span class="co"># let&#39;s group by sex and age_category_3  </span></span>
+<span id="cb86-3"><a href="#cb86-3" tabindex="-1"></a>  <span class="fu">group_by</span>(sex, age_category_3) <span class="sc">%&gt;%</span> </span>
+<span id="cb86-4"><a href="#cb86-4" tabindex="-1"></a>  <span class="co"># let&#39;s get the number of individuals</span></span>
+<span id="cb86-5"><a href="#cb86-5" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">number_of_individuals =</span> <span class="fu">n</span>())</span></code></pre></div>
+<pre><code>## # A tibble: 5 × 3
+## # Groups:   sex [2]
+##   sex    age_category_3 number_of_individuals
+##   &lt;chr&gt;  &lt;chr&gt;                          &lt;int&gt;
+## 1 Female Adult                            368
+## 2 Female Child                            155
+## 3 Female Senior                            26
+## 4 Male   Adult                            267
+## 5 Male   Senior                            19</code></pre>
 <p>Let’s include this <strong>missing combinations:</strong></p>
-<div class="sourceCode" id="cb77"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb77-1"><a href="#cb77-1" tabindex="-1"></a>yao_no_male_children <span class="sc">%&gt;%</span> </span>
-<span id="cb77-2"><a href="#cb77-2" tabindex="-1"></a>  <span class="co"># For these combinations, you must convert the variables to factors</span></span>
-<span id="cb77-3"><a href="#cb77-3" tabindex="-1"></a>  <span class="fu">mutate</span>(_______________________________) <span class="sc">%&gt;%</span> </span>
-<span id="cb77-4"><a href="#cb77-4" tabindex="-1"></a>  <span class="co"># Note the the .drop = FALSE argument</span></span>
-<span id="cb77-5"><a href="#cb77-5" tabindex="-1"></a>  <span class="fu">group_by</span>(_______________________________ <span class="sc">%&gt;%</span> </span>
-<span id="cb77-6"><a href="#cb77-6" tabindex="-1"></a>  <span class="fu">summarise</span>(_______________________________)</span></code></pre></div>
-<pre><code>## Error in parse(text = input): &lt;text&gt;:3:11: unexpected input
-## 2:   # For these combinations, you must convert the variables to factors
-## 3:   mutate(__
-##              ^</code></pre>
+<div class="sourceCode" id="cb88"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb88-1"><a href="#cb88-1" tabindex="-1"></a>yao_no_male_children <span class="sc">%&gt;%</span> </span>
+<span id="cb88-2"><a href="#cb88-2" tabindex="-1"></a>  <span class="co"># For these combinations, you must convert the variables to factors</span></span>
+<span id="cb88-3"><a href="#cb88-3" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">age_category_3 =</span> <span class="fu">as.factor</span>(age_category_3),</span>
+<span id="cb88-4"><a href="#cb88-4" tabindex="-1"></a>         <span class="at">sex =</span> <span class="fu">as.factor</span>(sex)) <span class="sc">%&gt;%</span> </span>
+<span id="cb88-5"><a href="#cb88-5" tabindex="-1"></a>  <span class="co"># Note the the .drop = FALSE argument</span></span>
+<span id="cb88-6"><a href="#cb88-6" tabindex="-1"></a>  <span class="fu">group_by</span>(age_category_3, sex, <span class="at">.drop =</span> <span class="cn">FALSE</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb88-7"><a href="#cb88-7" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">count =</span> <span class="fu">n</span>())</span></code></pre></div>
+<pre><code>## # A tibble: 6 × 3
+## # Groups:   age_category_3 [3]
+##   age_category_3 sex    count
+##   &lt;fct&gt;          &lt;fct&gt;  &lt;int&gt;
+## 1 Adult          Female   368
+## 2 Adult          Male     267
+## 3 Child          Female   155
+## 4 Child          Male       0
+## 5 Senior         Female    26
+## 6 Senior         Male      19</code></pre>
 <hr />
 <ul>
 <li><p>Let’s see one more example</p></li>
@@ -2504,30 +2735,57 @@ and education group</strong>.</p></li>
 <li><p>These combinations do not include the group
 “Female—Other”.</p></li>
 </ul>
-<div class="sourceCode" id="cb79"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb79-1"><a href="#cb79-1" tabindex="-1"></a>yao <span class="sc">%&gt;%</span> </span>
-<span id="cb79-2"><a href="#cb79-2" tabindex="-1"></a>  <span class="co"># let&#39;s group by WITHOUT accounting for missing combinations</span></span>
-<span id="cb79-3"><a href="#cb79-3" tabindex="-1"></a>  <span class="co"># we group by sex and highest_eduction</span></span>
-<span id="cb79-4"><a href="#cb79-4" tabindex="-1"></a>  <span class="fu">group_by</span>(_______________________________) <span class="sc">%&gt;%</span> </span>
-<span id="cb79-5"><a href="#cb79-5" tabindex="-1"></a>  <span class="co"># we summarize to have the mean age</span></span>
-<span id="cb79-6"><a href="#cb79-6" tabindex="-1"></a>  <span class="fu">summarise</span>(_______________________________)</span></code></pre></div>
-<pre><code>## Error in parse(text = input): &lt;text&gt;:4:13: unexpected input
-## 3:   # we group by sex and highest_eduction
-## 4:   group_by(__
-##                ^</code></pre>
+<div class="sourceCode" id="cb90"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb90-1"><a href="#cb90-1" tabindex="-1"></a>yao <span class="sc">%&gt;%</span> </span>
+<span id="cb90-2"><a href="#cb90-2" tabindex="-1"></a>  <span class="co"># let&#39;s group by WITHOUT accounting for missing combinations</span></span>
+<span id="cb90-3"><a href="#cb90-3" tabindex="-1"></a>  <span class="co"># we group by sex and highest_eduction</span></span>
+<span id="cb90-4"><a href="#cb90-4" tabindex="-1"></a>  <span class="fu">group_by</span>( sex, highest_education) <span class="sc">%&gt;%</span> </span>
+<span id="cb90-5"><a href="#cb90-5" tabindex="-1"></a>  <span class="co"># we summarize to have the mean age</span></span>
+<span id="cb90-6"><a href="#cb90-6" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">count =</span> <span class="fu">mean</span>(age, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span></code></pre></div>
+<pre><code>## # A tibble: 13 × 3
+## # Groups:   sex [2]
+##    sex    highest_education     count
+##    &lt;chr&gt;  &lt;chr&gt;                 &lt;dbl&gt;
+##  1 Female Doctorate              28  
+##  2 Female No formal instruction  45.6
+##  3 Female No response            35  
+##  4 Female Primary                26.8
+##  5 Female Secondary              28.8
+##  6 Female University             31.5
+##  7 Male   Doctorate              42.2
+##  8 Male   No formal instruction  37.9
+##  9 Male   No response            22  
+## 10 Male   Other                   5.5
+## 11 Male   Primary                22.9
+## 12 Male   Secondary              29.4
+## 13 Male   University             31.9</code></pre>
 <p>There are 7 rows for men but only 6 rows for women.</p>
 <p>Let’s include this missing combination:</p>
-<div class="sourceCode" id="cb81"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb81-1"><a href="#cb81-1" tabindex="-1"></a>yao <span class="sc">%&gt;%</span> </span>
-<span id="cb81-2"><a href="#cb81-2" tabindex="-1"></a>  <span class="co"># we need to make sure the grouping variables are factors</span></span>
-<span id="cb81-3"><a href="#cb81-3" tabindex="-1"></a>  <span class="fu">mutate</span>(_______________________________</span>
-<span id="cb81-4"><a href="#cb81-4" tabindex="-1"></a>         _______________________________) <span class="sc">%&gt;%</span> </span>
-<span id="cb81-5"><a href="#cb81-5" tabindex="-1"></a>  <span class="co"># we group by sex and highest_education</span></span>
-<span id="cb81-6"><a href="#cb81-6" tabindex="-1"></a>  <span class="fu">group_by</span>(_______________________________) <span class="sc">%&gt;%</span> </span>
-<span id="cb81-7"><a href="#cb81-7" tabindex="-1"></a>  <span class="co"># we summarize for mean age</span></span>
-<span id="cb81-8"><a href="#cb81-8" tabindex="-1"></a>  <span class="fu">summarise</span>(_______________________________)</span></code></pre></div>
-<pre><code>## Error in parse(text = input): &lt;text&gt;:3:11: unexpected input
-## 2:   # we need to make sure the grouping variables are factors
-## 3:   mutate(__
-##              ^</code></pre>
+<div class="sourceCode" id="cb92"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb92-1"><a href="#cb92-1" tabindex="-1"></a>yao <span class="sc">%&gt;%</span> </span>
+<span id="cb92-2"><a href="#cb92-2" tabindex="-1"></a>  <span class="co"># we need to make sure the grouping variables are factors</span></span>
+<span id="cb92-3"><a href="#cb92-3" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">highest_education =</span> <span class="fu">as.factor</span>(highest_education),</span>
+<span id="cb92-4"><a href="#cb92-4" tabindex="-1"></a>         <span class="at">sex =</span> <span class="fu">as.factor</span>(sex)) <span class="sc">%&gt;%</span> </span>
+<span id="cb92-5"><a href="#cb92-5" tabindex="-1"></a>  <span class="co"># we group by sex and highest_education</span></span>
+<span id="cb92-6"><a href="#cb92-6" tabindex="-1"></a>  <span class="fu">group_by</span>(highest_education, sex, <span class="at">.drop =</span> <span class="cn">FALSE</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb92-7"><a href="#cb92-7" tabindex="-1"></a>  <span class="co"># we summarize for mean age</span></span>
+<span id="cb92-8"><a href="#cb92-8" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">mean_age =</span> <span class="fu">mean</span>(age))</span></code></pre></div>
+<pre><code>## # A tibble: 14 × 3
+## # Groups:   highest_education [7]
+##    highest_education     sex    mean_age
+##    &lt;fct&gt;                 &lt;fct&gt;     &lt;dbl&gt;
+##  1 Doctorate             Female     28  
+##  2 Doctorate             Male       42.2
+##  3 No formal instruction Female     45.6
+##  4 No formal instruction Male       37.9
+##  5 No response           Female     35  
+##  6 No response           Male       22  
+##  7 Other                 Female    NaN  
+##  8 Other                 Male        5.5
+##  9 Primary               Female     26.8
+## 10 Primary               Male       22.9
+## 11 Secondary             Female     28.8
+## 12 Secondary             Male       29.4
+## 13 University            Female     31.5
+## 14 University            Male       31.9</code></pre>
 <hr />
 <p>PRACTICE TIME !</p>
 <div class="practice">
@@ -2559,9 +2817,14 @@ below:</p>
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb83"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb83-1"><a href="#cb83-1" tabindex="-1"></a>Q_median_age_by_neighborhood_agecategory_sex <span class="ot">&lt;-</span> </span>
-<span id="cb83-2"><a href="#cb83-2" tabindex="-1"></a>  yao <span class="sc">%&gt;%</span></span>
-<span id="cb83-3"><a href="#cb83-3" tabindex="-1"></a>  ____________________________</span></code></pre></div>
+<div class="sourceCode" id="cb94"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb94-1"><a href="#cb94-1" tabindex="-1"></a>Q_median_age_by_neighborhood_agecategory_sex <span class="ot">&lt;-</span> </span>
+<span id="cb94-2"><a href="#cb94-2" tabindex="-1"></a>  yao <span class="sc">%&gt;%</span></span>
+<span id="cb94-3"><a href="#cb94-3" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">neighborhood =</span> <span class="fu">as.factor</span>(neighborhood),</span>
+<span id="cb94-4"><a href="#cb94-4" tabindex="-1"></a>         <span class="at">age_category_3 =</span> <span class="fu">as.factor</span>(age_category_3),</span>
+<span id="cb94-5"><a href="#cb94-5" tabindex="-1"></a>         <span class="at">sex =</span> <span class="fu">as.factor</span>(sex)) <span class="sc">%&gt;%</span> </span>
+<span id="cb94-6"><a href="#cb94-6" tabindex="-1"></a>  <span class="fu">group_by</span>(neighborhood, age_category_3, sex, <span class="at">.drop =</span> <span class="cn">FALSE</span> )<span class="sc">%&gt;%</span></span>
+<span id="cb94-7"><a href="#cb94-7" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">median_age =</span> <span class="fu">median</span>(age))</span>
+<span id="cb94-8"><a href="#cb94-8" tabindex="-1"></a>Q_median_age_by_neighborhood_agecategory_sex</span></code></pre></div>
 </div>
 <hr />
 <div class="side-note">
@@ -2573,17 +2836,16 @@ below:</p>
 <code>yao_no_male_children</code></p></li>
 </ul>
 <hr />
-<div class="sourceCode" id="cb84"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb84-1"><a href="#cb84-1" tabindex="-1"></a>yao_no_male_children <span class="sc">%&gt;%</span> </span>
-<span id="cb84-2"><a href="#cb84-2" tabindex="-1"></a>  <span class="fu">group_by</span>(sex, age_category_3) <span class="sc">%&gt;%</span> </span>
-<span id="cb84-3"><a href="#cb84-3" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">number_of_individuals =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span> </span>
-<span id="cb84-4"><a href="#cb84-4" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb84-5"><a href="#cb84-5" tabindex="-1"></a>  </span>
-<span id="cb84-6"><a href="#cb84-6" tabindex="-1"></a>  <span class="co"># pass the output to ggplot</span></span>
-<span id="cb84-7"><a href="#cb84-7" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span> </span>
-<span id="cb84-8"><a href="#cb84-8" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="fu">aes</span>(<span class="at">x =</span> sex, <span class="at">y =</span> number_of_individuals, <span class="at">fill =</span> age_category_3), </span>
-<span id="cb84-9"><a href="#cb84-9" tabindex="-1"></a>           <span class="at">position =</span> <span class="st">&quot;dodge&quot;</span>)</span></code></pre></div>
-<pre><code>## Error:
-## ! object &#39;yao_no_male_children&#39; not found</code></pre>
+<div class="sourceCode" id="cb95"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb95-1"><a href="#cb95-1" tabindex="-1"></a>yao_no_male_children <span class="sc">%&gt;%</span> </span>
+<span id="cb95-2"><a href="#cb95-2" tabindex="-1"></a>  <span class="fu">group_by</span>(sex, age_category_3) <span class="sc">%&gt;%</span> </span>
+<span id="cb95-3"><a href="#cb95-3" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">number_of_individuals =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span> </span>
+<span id="cb95-4"><a href="#cb95-4" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb95-5"><a href="#cb95-5" tabindex="-1"></a>  </span>
+<span id="cb95-6"><a href="#cb95-6" tabindex="-1"></a>  <span class="co"># pass the output to ggplot</span></span>
+<span id="cb95-7"><a href="#cb95-7" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span> </span>
+<span id="cb95-8"><a href="#cb95-8" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="fu">aes</span>(<span class="at">x =</span> sex, <span class="at">y =</span> number_of_individuals, <span class="at">fill =</span> age_category_3), </span>
+<span id="cb95-9"><a href="#cb95-9" tabindex="-1"></a>           <span class="at">position =</span> <span class="st">&quot;dodge&quot;</span>)</span></code></pre></div>
+<p><img role="img" aria-label src="data:image/png;base64,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" alt width="672" /></p>
 <hr />
 <ul>
 <li><p>Not very elegant!</p></li>
@@ -2591,39 +2853,37 @@ below:</p>
 children</strong>.</p></li>
 <li><p>Let’s account for the missing group.</p></li>
 </ul>
-<div class="sourceCode" id="cb86"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb86-1"><a href="#cb86-1" tabindex="-1"></a>yao_no_male_children <span class="sc">%&gt;%</span> </span>
-<span id="cb86-2"><a href="#cb86-2" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">sex =</span> <span class="fu">as.factor</span>(sex), </span>
-<span id="cb86-3"><a href="#cb86-3" tabindex="-1"></a>         <span class="at">age_category_3 =</span> <span class="fu">as.factor</span>(age_category_3)) <span class="sc">%&gt;%</span> </span>
-<span id="cb86-4"><a href="#cb86-4" tabindex="-1"></a>  <span class="fu">group_by</span>(sex, age_category_3, <span class="at">.drop =</span> <span class="cn">FALSE</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb86-5"><a href="#cb86-5" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">number_of_individuals =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span> </span>
-<span id="cb86-6"><a href="#cb86-6" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb86-7"><a href="#cb86-7" tabindex="-1"></a>  </span>
-<span id="cb86-8"><a href="#cb86-8" tabindex="-1"></a>  <span class="co"># pass the output to ggplot</span></span>
-<span id="cb86-9"><a href="#cb86-9" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span> </span>
-<span id="cb86-10"><a href="#cb86-10" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="fu">aes</span>(<span class="at">x =</span> sex, <span class="at">y =</span> number_of_individuals, <span class="at">fill =</span> age_category_3), </span>
-<span id="cb86-11"><a href="#cb86-11" tabindex="-1"></a>           <span class="at">position =</span> <span class="st">&quot;dodge&quot;</span>)</span></code></pre></div>
-<pre><code>## Error:
-## ! object &#39;yao_no_male_children&#39; not found</code></pre>
+<div class="sourceCode" id="cb96"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb96-1"><a href="#cb96-1" tabindex="-1"></a>yao_no_male_children <span class="sc">%&gt;%</span> </span>
+<span id="cb96-2"><a href="#cb96-2" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">sex =</span> <span class="fu">as.factor</span>(sex), </span>
+<span id="cb96-3"><a href="#cb96-3" tabindex="-1"></a>         <span class="at">age_category_3 =</span> <span class="fu">as.factor</span>(age_category_3)) <span class="sc">%&gt;%</span> </span>
+<span id="cb96-4"><a href="#cb96-4" tabindex="-1"></a>  <span class="fu">group_by</span>(sex, age_category_3, <span class="at">.drop =</span> <span class="cn">FALSE</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb96-5"><a href="#cb96-5" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">number_of_individuals =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span> </span>
+<span id="cb96-6"><a href="#cb96-6" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb96-7"><a href="#cb96-7" tabindex="-1"></a>  </span>
+<span id="cb96-8"><a href="#cb96-8" tabindex="-1"></a>  <span class="co"># pass the output to ggplot</span></span>
+<span id="cb96-9"><a href="#cb96-9" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span> </span>
+<span id="cb96-10"><a href="#cb96-10" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="fu">aes</span>(<span class="at">x =</span> sex, <span class="at">y =</span> number_of_individuals, <span class="at">fill =</span> age_category_3), </span>
+<span id="cb96-11"><a href="#cb96-11" tabindex="-1"></a>           <span class="at">position =</span> <span class="st">&quot;dodge&quot;</span>)</span></code></pre></div>
+<p><img role="img" aria-label src="data:image/png;base64,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" alt width="672" /></p>
 <p>Much better!</p>
 <p>By the way, this output can be improved slightly by setting the
 factor levels for age to their proper ascending order: first “Child”,
 then “Adult” then “Senior”:</p>
-<div class="sourceCode" id="cb88"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb88-1"><a href="#cb88-1" tabindex="-1"></a>yao_no_male_children <span class="sc">%&gt;%</span> </span>
-<span id="cb88-2"><a href="#cb88-2" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">sex =</span> <span class="fu">as.factor</span>(sex), </span>
-<span id="cb88-3"><a href="#cb88-3" tabindex="-1"></a>         <span class="at">age_category_3 =</span> <span class="fu">factor</span>(age_category_3, </span>
-<span id="cb88-4"><a href="#cb88-4" tabindex="-1"></a>                                 <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">&quot;Child&quot;</span>, </span>
-<span id="cb88-5"><a href="#cb88-5" tabindex="-1"></a>                                            <span class="st">&quot;Adult&quot;</span>, </span>
-<span id="cb88-6"><a href="#cb88-6" tabindex="-1"></a>                                            <span class="st">&quot;Senior&quot;</span>))) <span class="sc">%&gt;%</span> </span>
-<span id="cb88-7"><a href="#cb88-7" tabindex="-1"></a>  <span class="fu">group_by</span>(sex, age_category_3, <span class="at">.drop =</span> <span class="cn">FALSE</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb88-8"><a href="#cb88-8" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">number_of_individuals =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span> </span>
-<span id="cb88-9"><a href="#cb88-9" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb88-10"><a href="#cb88-10" tabindex="-1"></a>  </span>
-<span id="cb88-11"><a href="#cb88-11" tabindex="-1"></a>  <span class="co"># pass the output to ggplot</span></span>
-<span id="cb88-12"><a href="#cb88-12" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span> </span>
-<span id="cb88-13"><a href="#cb88-13" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="fu">aes</span>(<span class="at">x =</span> sex, <span class="at">y =</span> number_of_individuals, <span class="at">fill =</span> age_category_3), </span>
-<span id="cb88-14"><a href="#cb88-14" tabindex="-1"></a>           <span class="at">position =</span> <span class="st">&quot;dodge&quot;</span>)</span></code></pre></div>
-<pre><code>## Error:
-## ! object &#39;yao_no_male_children&#39; not found</code></pre>
+<div class="sourceCode" id="cb97"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb97-1"><a href="#cb97-1" tabindex="-1"></a>yao_no_male_children <span class="sc">%&gt;%</span> </span>
+<span id="cb97-2"><a href="#cb97-2" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">sex =</span> <span class="fu">as.factor</span>(sex), </span>
+<span id="cb97-3"><a href="#cb97-3" tabindex="-1"></a>         <span class="at">age_category_3 =</span> <span class="fu">factor</span>(age_category_3, </span>
+<span id="cb97-4"><a href="#cb97-4" tabindex="-1"></a>                                 <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">&quot;Child&quot;</span>, </span>
+<span id="cb97-5"><a href="#cb97-5" tabindex="-1"></a>                                            <span class="st">&quot;Adult&quot;</span>, </span>
+<span id="cb97-6"><a href="#cb97-6" tabindex="-1"></a>                                            <span class="st">&quot;Senior&quot;</span>))) <span class="sc">%&gt;%</span> </span>
+<span id="cb97-7"><a href="#cb97-7" tabindex="-1"></a>  <span class="fu">group_by</span>(sex, age_category_3, <span class="at">.drop =</span> <span class="cn">FALSE</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb97-8"><a href="#cb97-8" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">number_of_individuals =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span> </span>
+<span id="cb97-9"><a href="#cb97-9" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb97-10"><a href="#cb97-10" tabindex="-1"></a>  </span>
+<span id="cb97-11"><a href="#cb97-11" tabindex="-1"></a>  <span class="co"># pass the output to ggplot</span></span>
+<span id="cb97-12"><a href="#cb97-12" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span> </span>
+<span id="cb97-13"><a href="#cb97-13" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="fu">aes</span>(<span class="at">x =</span> sex, <span class="at">y =</span> number_of_individuals, <span class="at">fill =</span> age_category_3), </span>
+<span id="cb97-14"><a href="#cb97-14" tabindex="-1"></a>           <span class="at">position =</span> <span class="st">&quot;dodge&quot;</span>)</span></code></pre></div>
+<p><img role="img" aria-label src="data:image/png;base64,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eKIeFmgctj1hgRIQmbyt5HiiHhZoHLY9YYESEJm8reR4oh4WaBy2PWGBEhCZvK3keKIeFmgctj1hgRIQmbyt5HiiHhZoHLY9YYESEJm8reR4oh4WaBy2PWGBEhCZvK3keKIeFmgctj1hgRIQmbyt5HiiHhZoHLY9YYESEJm8reR4oh4WaBy2PWGBEhCZvK3keKIeFmgctj1hgRIQmbyt5HiiHhZoHLY9YYESEJm8reR4oh4WaBy2PWGBEhCZvK3keKIeFmgctj1hgRIQmbyt5HiiHhZoHLY9YYESEJm8reR4oh4WaBy2PWGBEhCZvK3keKIeFmgctj1hgRIQmbyt5HiiHhZoHLY9YYESEJm8reR4oh4WaBy2PWGBEhCZvK3keKIeFmgctj1hgRIQmbyt5HiiHhZoHLY9YYESEJm8reR4oh4WaBy2PWGBEhCZvK3keKIeFmgctj1hgRIQmbyt5HiiHhZoHLY9YYESEJm8reR4oh4WaBy2PWGBEhCZvK3keKIeFmgctj1hgRIQmbyt5HiiHhZoHLY9YYESEJm8reR4oh4WaBy2PWGBEhCZvK3keKIeFmgctj1hgRIQmbyt5HiiHhZoHLY9YYESEJm8reR4oh4WaBy2PWGBEhCZvK3keKIeFmgctj1hgRIQmbyt5HiiHhZoHLY9YYESEJm8reR4oh4WaBy2PWGBEhCZvK3keKIeFmgctj1hgRIQmbyt5HiiHhZoHLY9YYESEJm8reR4oh4WaBy2PWGBEhCZvK3keKIeFmgctj1hgRIQmbyt5HiiHhZoHLY9YYESEJm8reR4oh4WaBy2PWGBEhCZvK3keKIeFmgctj1hgRIQmbyt5HiiHhZoHLY9YYESEJm8reR4oh4WaBy2PWGBEhCZvK3keKIeFmgctj1hgRIQmbyt5HiiHhZoHLY9YYESEJm8reR4oh4WaBy2PWGBEhCZvK3keKIeFmgctj1hgRIQmbyt5HiiHhZoHLY9YYESEJm8reR4oh4WaBy2PWGBEhCZvK3keKIeFmgctj1hgRIQmbyt5HiiHhZoHLY9YYESEJm8reR4oh4WaBy2PWGBEhCZvK3keKIeFmgctj1hgRIQmbyt5HiiHhZoHLY9YYESEJm8reR4oh4WaBy2PWGBEhCZvK3keKIeFmgctj1hgRIQmbyt5HiiHhZoHLY9YYESEJm8reR4oh4W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Jjs+hF8w3RV9pPo2CHTq3hdmv+LJB5PJ9eZfhR3/KLCLCJEupsJODCKhDW38H949mEwmz54t5fbp9yeTKy98fry4pudu9/0rz3+06ef77z88D778dPO3KF+86GkufZmTdybXP31tMnnivz2Y71persila5E2sule+KPuNP61a9eemf79wqOe5NGw4x8FdhEh0sVU2IlBJLRhfT9ZnMeePNmLbKqu2S05787NdnaeZoNcjle+vfp0SwJde5qNL3PlP5t/+1r/7X93db4Le+fgsr3DW1u/B7r8K4+wHr0FOhbsIagHOzGIhDas78ezI9i7r81PZB/1271UerNNv9/tFX71wQaDTr//1Ef941+8+Olm/lt/mgte5snfTndfX5sdRXd+nSrx7s+mD1wIdvP5na8+iLhv82pMX/36mX455faVRE4t0LFgD0E92IlBJLRBdT87Mr4/29W7szhkPp6Zbbo9P3I+vnAnb/5jnfG6h68/3UKg60+z/jKLhy+epxPo9f4Bt86MuukIvtt3vRK4kt7L2cVhFxEiXUyFnRhEQhtU97Nj37m5znb0pkpb2d6gsFsPRdc90frTLQS6/jTnX2Zh55laFz9+puRLjuB/9eyzB2cngi7BAo3DLiJEupgKOzGIhLZl8ftj5SVLrm9ffEJ945H10bJA159m/WXODtQXwpw+YPFiR2siv5BPDoafhT9579rrny9/KmfH674TqYNdRIh0MRV2YhAJbXjnv/rDh+890x9LL53NPp5vX77W20VWffh0i++vP836yyz5cvblkmH7fdxLjuCXHnU5Fyxnd+6/0MvZzWAXESJdTIWdGERCG1j4T55Zkke7QFeeboBAV3d0l/6hf+zl5+BPQxeCWqBx2EWESBdTYScGkdAG1X12OdGz1/7ys6O5ThYeOl7bvpg1ga493ZJAV55m/WUu2wPtn+LWo8z2yF1Uvwc6BHYRIdLFVNiJQSS0QXU/Pjv9suk90MvvJDp783Jxcmjl6ZbeA1337CPfAz3zYXdiasM9lus/dikWaBx2ESHSxVTYiUEktCFtf2i29bPu8+2js9PjF7v07L3H/iD73NMt9lDXn+b8WfjFIfrsrvZlgU4f8o+uXnwEf3x2/efRo68EtUDjsIsIkS6mwk4MIqENaftD4z287nP9OtD5Ay4+TXN2AefaDuvxynug554mcB3o8hIf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" alt width="672" /></p>
 </div>
 </div>
 <div id="learning-objectives-1" class="section level2" number="10">

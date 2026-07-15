@@ -473,9 +473,9 @@ Let's see what the output looks like when grouping by 1 variable:
 ```{r}
 yao %>% 
   # we group by sex
-  group_by(_____) %>% 
+  group_by(sex) %>% 
   # and calculate the mean age
-  summarize(_____________________________________________)
+  summarize(mean_age = mean(age))
 ```
 
 ------------------------------------------------------------------------
@@ -485,7 +485,7 @@ Now let's consider grouping by two variables:
 ```{r}
 yao %>%
   # we group by sex and neighborhood
-  group_by(_____________________) %>% 
+  group_by(sex, neighborhood) %>% 
   summarize(mean_age = mean(age))
 ```
 
@@ -509,7 +509,7 @@ yao %>%
   group_by(sex, neighborhood) %>% 
   summarize(mean_age = mean(age)) %>% 
   # let's select mean_age
-  select(____________) # doesn't work as expected 
+  select(mean_age) # doesn't work as expected 
 ```
 
 ------------------------------------------------------------------------
@@ -527,7 +527,7 @@ yao %>%
   group_by(sex, neighborhood) %>% 
   summarize(mean_age = mean(age)) %>% 
   # ungroup
-  ____________
+  ungroup()
 ```
 
 Now we can try selecting again:
@@ -537,9 +537,9 @@ yao %>%
   group_by(sex, neighborhood) %>% 
   summarize(mean_age = mean(age)) %>% 
   # ungroup
-  ____________
+  ungroup() %>% 
   # select: it behaves normally !
-  ____________
+  select(mean_age)
 ```
 
 ------------------------------------------------------------------------
@@ -555,9 +555,9 @@ yao %>%
 ```{r}
 yao %>% 
   # we group by neighborhood
-  group_by(__________________) %>% 
+  group_by(neighborhood) %>% 
   # and create a count using the n() function
-  summarize(__________________)
+  summarize(count = n())
 ```
 
 ------------------------------------------------------------------------
@@ -567,10 +567,10 @@ We can also calculate another summary statistic at the same time:
 ```{r}
 yao %>% 
   # group by neighborhood
-  group_by(neighborhood) %>% 
+  group_by(igg_result) %>% 
   # let's make a count and a mean 
-  summarize(__________________
-            __________________)
+  summarize(count = n(),
+            mean = mean(age))
 ```
 
 ------------------------------------------------------------------------
@@ -586,10 +586,16 @@ Your output should be a data frame with three columns named as shown below:
 |------------|-------|-----------------------|
 |            |       |                       |
 
-```{r, eval = FALSE}
+```{r}
 Q_occupation_summary <- 
   yao %>%
-  ____________________________
+  group_by(occupation) %>% 
+  summarize( count = n(),
+             mean_n_days_miss_work  = mean(n_days_miss_work, na.rm = TRUE))
+Q_occupation_summary
+
+##You are getting NaN (Not a Number) because you are calculating a mean() on groups where every single value in that group is NA.
+
 ```
 
 ```{r, include = FALSE}
@@ -607,9 +613,9 @@ Q_occupation_summary <-
 ```{r}
 yao %>% 
   # group by neighborhood
-  group_by(__________________) %>% 
+  group_by(neighborhood) %>% 
   # let's count only those under 18
-  summarize(count_under_18 = __________________)
+  summarize(count_under_18 = sum(age<18) )
 ```
 
 ------------------------------------------------------------------------
@@ -622,7 +628,7 @@ yao %>%
 yao %>% 
   group_by(neighborhood) %>% 
   # let's place a condition on the highest_education variable
-  summarize(count_with_doctorates = __________________)
+  summarize(count_with_doctorates = sum(highest_education == "Doctorate"))
 ```
 
 ------------------------------------------------------------------------
@@ -638,7 +644,7 @@ yao %>%
 ```{r}
 yao %>% 
   # let's have a quick look at the treatment variable
-  select(__________________)
+  select(treatment_combinations, neighborhood)
 ```
 
 ```{r}
@@ -646,7 +652,7 @@ yao %>%
   # let's group by neighborhood
   group_by(neighborhood) %>% 
   # let's set a condition on the NA to count the no treatments
-  summarize(____________________________________)
+  summarize(no_treatments = sum(is.na(treatment_combinations))) 
 ```
 
 ------------------------------------------------------------------------
@@ -672,17 +678,20 @@ Note that this is the same output as:
 ```{r}
 yao %>%
   group_by(occupation) %>%
-  summarize(n = n())
+  summarize(n = n()) 
+
+
 ```
 
 ------------------------------------------------------------------------
 
 You can also apply `dplyr::count()` in a nested fashion:
 
-```{r}
+```{r, }
 yao %>%
   # let's count by sex and occupation
-  count(_________________________)
+count(sex, occupation, name = "count")
+  
 ```
 
 ------------------------------------------------------------------------
@@ -703,7 +712,8 @@ Your output should be a data frame with three columns named as shown below:
 ```{r, eval = FALSE}
 Q_count_iggresults_stratified_by_sex_agecategories <- 
   yao %>%
-  ____________________________
+  count(sex, age_category_3, igg_result)
+Q_count_iggresults_stratified_by_sex_agecategories
 ```
 
 ```{r, include = FALSE}
@@ -722,7 +732,9 @@ Your output should be a data frame with three columns named as shown below:
 ```{r, eval = FALSE}
 Q_count_bedridden_age_categories <- 
   yao %>%
-  ____________________________
+  count(age_category_3, n_bedridden_days)
+
+Q_count_bedridden_age_categories
 ```
 
 ```{r, include = FALSE}
@@ -751,7 +763,7 @@ Q_count_bedridden_age_categories <-
 yao_no_male_children <- 
   yao %>% 
   # we leave out all male children
-  filter(_______________________________)
+  filter(!(age_category_3=="Child" & sex == "Male"))
 ```
 
 Let's see the missing combination:
@@ -759,9 +771,9 @@ Let's see the missing combination:
 ```{r}
 yao_no_male_children %>% 
   # let's group by sex and age_category_3  
-  group_by(_______________________________) %>% 
+  group_by(sex, age_category_3) %>% 
   # let's get the number of individuals
-  summarise(number_of_individuals = _______________________________)
+  summarise(number_of_individuals = n())
 ```
 
 Let's include this **missing combinations:**
@@ -769,10 +781,11 @@ Let's include this **missing combinations:**
 ```{r}
 yao_no_male_children %>% 
   # For these combinations, you must convert the variables to factors
-  mutate(_______________________________) %>% 
+  mutate(age_category_3 = as.factor(age_category_3),
+         sex = as.factor(sex)) %>% 
   # Note the the .drop = FALSE argument
-  group_by(_______________________________ %>% 
-  summarise(_______________________________)
+  group_by(age_category_3, sex, .drop = FALSE) %>% 
+  summarise(count = n())
 ```
 
 ------------------------------------------------------------------------
@@ -787,9 +800,9 @@ yao_no_male_children %>%
 yao %>% 
   # let's group by WITHOUT accounting for missing combinations
   # we group by sex and highest_eduction
-  group_by(_______________________________) %>% 
+  group_by( sex, highest_education) %>% 
   # we summarize to have the mean age
-  summarise(_______________________________)
+  summarise(count = mean(age, na.rm = TRUE))
 ```
 
 There are 7 rows for men but only 6 rows for women.
@@ -799,12 +812,12 @@ Let's include this missing combination:
 ```{r}
 yao %>% 
   # we need to make sure the grouping variables are factors
-  mutate(_______________________________
-         _______________________________) %>% 
+  mutate(highest_education = as.factor(highest_education),
+         sex = as.factor(sex)) %>% 
   # we group by sex and highest_education
-  group_by(_______________________________) %>% 
+  group_by(highest_education, sex, .drop = FALSE) %>% 
   # we summarize for mean age
-  summarise(_______________________________)
+  summarize(mean_age = mean(age))
 ```
 
 ------------------------------------------------------------------------
@@ -827,7 +840,12 @@ Your output should be a data frame with three columns named as shown below:
 ```{r, eval = FALSE}
 Q_median_age_by_neighborhood_agecategory_sex <- 
   yao %>%
-  ____________________________
+  mutate(neighborhood = as.factor(neighborhood),
+         age_category_3 = as.factor(age_category_3),
+         sex = as.factor(sex)) %>% 
+  group_by(neighborhood, age_category_3, sex, .drop = FALSE )%>%
+  summarise(median_age = median(age))
+Q_median_age_by_neighborhood_agecategory_sex
 ```
 
 ```{r, include = FALSE}
