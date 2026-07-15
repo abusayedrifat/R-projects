@@ -1888,20 +1888,20 @@ days that respondents missed work due to COVID-like symptoms.</p></li>
 </ul>
 <div class="sourceCode" id="cb23"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" tabindex="-1"></a>yao <span class="sc">%&gt;%</span> </span>
 <span id="cb23-2"><a href="#cb23-2" tabindex="-1"></a>  <span class="co"># let&#39;s keep only n_days_miss_work</span></span>
-<span id="cb23-3"><a href="#cb23-3" tabindex="-1"></a>  <span class="fu">select</span>(______________________)</span></code></pre></div>
-<pre><code>## Error in parse(text = input): &lt;text&gt;:3:11: unexpected input
-## 2:   # let&#39;s keep only n_days_miss_work
-## 3:   select(__
-##              ^</code></pre>
+<span id="cb23-3"><a href="#cb23-3" tabindex="-1"></a>  <span class="fu">select</span>(id,n_days_miss_work)</span></code></pre></div>
+<pre><code>## Error in `select()`:
+## ! Can&#39;t select columns that don&#39;t exist.
+## ✖ Column `id` doesn&#39;t exist.</code></pre>
 <div class="sourceCode" id="cb25"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" tabindex="-1"></a>yao <span class="sc">%&gt;%</span></span>
 <span id="cb25-2"><a href="#cb25-2" tabindex="-1"></a>  <span class="co"># let&#39;s group by sex</span></span>
-<span id="cb25-3"><a href="#cb25-3" tabindex="-1"></a>  <span class="fu">group_by</span>(____) <span class="sc">%&gt;%</span> </span>
+<span id="cb25-3"><a href="#cb25-3" tabindex="-1"></a>  <span class="fu">group_by</span>(sex) <span class="sc">%&gt;%</span> </span>
 <span id="cb25-4"><a href="#cb25-4" tabindex="-1"></a>  <span class="co"># let&#39;s sum the number of work days missed</span></span>
-<span id="cb25-5"><a href="#cb25-5" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">total_days_missed =</span> _________________________________)</span></code></pre></div>
-<pre><code>## Error in parse(text = input): &lt;text&gt;:3:13: unexpected input
-## 2:   # let&#39;s group by sex
-## 3:   group_by(__
-##                ^</code></pre>
+<span id="cb25-5"><a href="#cb25-5" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">total_days_missed =</span> <span class="fu">mean</span>(n_days_miss_work, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span></code></pre></div>
+<pre><code>## # A tibble: 2 × 2
+##   sex    total_days_missed
+##   &lt;chr&gt;              &lt;dbl&gt;
+## 1 Female              1.50
+## 2 Male                2.18</code></pre>
 <hr />
 <ul>
 <li><p><code>summarize()</code> is so
@@ -1944,8 +1944,9 @@ frame. Name the average weight column <code>weight_mean</code></p>
 </table>
 <div class="sourceCode" id="cb27"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" tabindex="-1"></a>Q_weight_by_smoking_status <span class="ot">&lt;-</span> </span>
 <span id="cb27-2"><a href="#cb27-2" tabindex="-1"></a>  yao <span class="sc">%&gt;%</span> </span>
-<span id="cb27-3"><a href="#cb27-3" tabindex="-1"></a>  ________________________</span>
-<span id="cb27-4"><a href="#cb27-4" tabindex="-1"></a>  ________________________</span></code></pre></div>
+<span id="cb27-3"><a href="#cb27-3" tabindex="-1"></a>  <span class="fu">group_by</span>(is_smoker) <span class="sc">%&gt;%</span> </span>
+<span id="cb27-4"><a href="#cb27-4" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">weight_mean =</span> <span class="fu">mean</span>(weight_kg))</span>
+<span id="cb27-5"><a href="#cb27-5" tabindex="-1"></a>Q_weight_by_smoking_status</span></code></pre></div>
 </div>
 <div class="practice">
 <p>Use <code>group_by()</code>, <code>summarize()</code>, and the
@@ -1976,8 +1977,24 @@ below:</p>
 </table>
 <div class="sourceCode" id="cb28"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" tabindex="-1"></a>Q_min_max_height_by_sex <span class="ot">&lt;-</span> </span>
 <span id="cb28-2"><a href="#cb28-2" tabindex="-1"></a>  yao <span class="sc">%&gt;%</span> </span>
-<span id="cb28-3"><a href="#cb28-3" tabindex="-1"></a>  ________________________</span>
-<span id="cb28-4"><a href="#cb28-4" tabindex="-1"></a>  ________________________</span></code></pre></div>
+<span id="cb28-3"><a href="#cb28-3" tabindex="-1"></a>  <span class="fu">group_by</span>(sex) <span class="sc">%&gt;%</span> </span>
+<span id="cb28-4"><a href="#cb28-4" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">min_height_cm =</span> <span class="fu">min</span>(height_cm, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb28-5"><a href="#cb28-5" tabindex="-1"></a>            <span class="at">max_height_cm =</span> <span class="fu">max</span>(height_cm, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb28-6"><a href="#cb28-6" tabindex="-1"></a></span>
+<span id="cb28-7"><a href="#cb28-7" tabindex="-1"></a>Q_min_max_height_by_sex</span></code></pre></div>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" tabindex="-1"></a><span class="fu">.CHECK_Q_min_max_height_by_sex</span>()</span></code></pre></div>
+<pre><code>## You have not yet defined the answer object, `Q_min_max_height_by_sex`.
+##   1   2   3  ᐅ4ᐊ  5   6   7   8   9   10   11</code></pre>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" tabindex="-1"></a><span class="fu">.HINT_Q_min_max_height_by_sex</span>()</span></code></pre></div>
+<pre><code>## 
+## HINT.
+## Your answer should look this: 
+## 
+## Q_min_max_height_by_sex &lt;- 
+##   yao %&gt;% 
+##   group_by(VARIABLE) %&gt;%
+##   summarize(min_height_cm = FORMULA_HERE,
+##             max_height_cm = FORMULA_HERE)</code></pre>
 </div>
 <div class="practice">
 <p>Use <code>group_by()</code>, <code>summarize()</code>, and the
@@ -2004,10 +2021,16 @@ below:</p>
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb29"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" tabindex="-1"></a>Q_sum_bedridden_days <span class="ot">&lt;-</span> </span>
-<span id="cb29-2"><a href="#cb29-2" tabindex="-1"></a>  yao <span class="sc">%&gt;%</span> </span>
-<span id="cb29-3"><a href="#cb29-3" tabindex="-1"></a>  ________________________</span>
-<span id="cb29-4"><a href="#cb29-4" tabindex="-1"></a>  ________________________</span></code></pre></div>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" tabindex="-1"></a>Q_sum_bedridden_days <span class="ot">&lt;-</span> </span>
+<span id="cb33-2"><a href="#cb33-2" tabindex="-1"></a>  yao <span class="sc">%&gt;%</span> </span>
+<span id="cb33-3"><a href="#cb33-3" tabindex="-1"></a>  <span class="fu">group_by</span>(sex) <span class="sc">%&gt;%</span> </span>
+<span id="cb33-4"><a href="#cb33-4" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">total_bedridden_days =</span> <span class="fu">sum</span>(n_bedridden_days, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb33-5"><a href="#cb33-5" tabindex="-1"></a>Q_sum_bedridden_days</span></code></pre></div>
+<pre><code>## # A tibble: 2 × 2
+##   sex    total_bedridden_days
+##   &lt;chr&gt;                 &lt;dbl&gt;
+## 1 Female                  175
+## 2 Male                    163</code></pre>
 </div>
 <hr />
 </div>
@@ -2023,11 +2046,11 @@ neighbourhood</em> (rather than the mean age of <em>all</em>
 women).</p></li>
 </ul>
 <hr />
-<div class="sourceCode" id="cb30"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" tabindex="-1"></a>yao <span class="sc">%&gt;%</span></span>
-<span id="cb30-2"><a href="#cb30-2" tabindex="-1"></a>  <span class="co"># let&#39;s group by sex and neighborhood</span></span>
-<span id="cb30-3"><a href="#cb30-3" tabindex="-1"></a>  <span class="fu">group_by</span>(__________________________) <span class="sc">%&gt;%</span> </span>
-<span id="cb30-4"><a href="#cb30-4" tabindex="-1"></a>  <span class="co"># we summarize to get the mean age</span></span>
-<span id="cb30-5"><a href="#cb30-5" tabindex="-1"></a>  <span class="fu">summarize</span>(__________________________)</span></code></pre></div>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" tabindex="-1"></a>yao <span class="sc">%&gt;%</span></span>
+<span id="cb35-2"><a href="#cb35-2" tabindex="-1"></a>  <span class="co"># let&#39;s group by sex and neighborhood</span></span>
+<span id="cb35-3"><a href="#cb35-3" tabindex="-1"></a>  <span class="fu">group_by</span>(__________________________) <span class="sc">%&gt;%</span> </span>
+<span id="cb35-4"><a href="#cb35-4" tabindex="-1"></a>  <span class="co"># we summarize to get the mean age</span></span>
+<span id="cb35-5"><a href="#cb35-5" tabindex="-1"></a>  <span class="fu">summarize</span>(__________________________)</span></code></pre></div>
 <pre><code>## Error in parse(text = input): &lt;text&gt;:3:13: unexpected input
 ## 2:   # let&#39;s group by sex and neighborhood
 ## 3:   group_by(__
@@ -2042,10 +2065,10 @@ women).</p></li>
 differently.</p></li>
 </ul>
 <hr />
-<div class="sourceCode" id="cb32"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" tabindex="-1"></a>yao <span class="sc">%&gt;%</span> </span>
-<span id="cb32-2"><a href="#cb32-2" tabindex="-1"></a>  <span class="co"># let&#39;s put neighborhood before sex in the grouping</span></span>
-<span id="cb32-3"><a href="#cb32-3" tabindex="-1"></a>  <span class="fu">group_by</span>(________________________) <span class="sc">%&gt;%</span> </span>
-<span id="cb32-4"><a href="#cb32-4" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">mean_age =</span> <span class="fu">mean</span>(age))</span></code></pre></div>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" tabindex="-1"></a>yao <span class="sc">%&gt;%</span> </span>
+<span id="cb37-2"><a href="#cb37-2" tabindex="-1"></a>  <span class="co"># let&#39;s put neighborhood before sex in the grouping</span></span>
+<span id="cb37-3"><a href="#cb37-3" tabindex="-1"></a>  <span class="fu">group_by</span>(________________________) <span class="sc">%&gt;%</span> </span>
+<span id="cb37-4"><a href="#cb37-4" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">mean_age =</span> <span class="fu">mean</span>(age))</span></code></pre></div>
 <pre><code>## Error in parse(text = input): &lt;text&gt;:3:13: unexpected input
 ## 2:   # let&#39;s put neighborhood before sex in the grouping
 ## 3:   group_by(__
@@ -2076,9 +2099,9 @@ below:</p>
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb34"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" tabindex="-1"></a>Q_weight_by_sex_treatments <span class="ot">&lt;-</span> </span>
-<span id="cb34-2"><a href="#cb34-2" tabindex="-1"></a>  yao <span class="sc">%&gt;%</span></span>
-<span id="cb34-3"><a href="#cb34-3" tabindex="-1"></a>  ____________________________</span></code></pre></div>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" tabindex="-1"></a>Q_weight_by_sex_treatments <span class="ot">&lt;-</span> </span>
+<span id="cb39-2"><a href="#cb39-2" tabindex="-1"></a>  yao <span class="sc">%&gt;%</span></span>
+<span id="cb39-3"><a href="#cb39-3" tabindex="-1"></a>  ____________________________</span></code></pre></div>
 </div>
 <div class="practice">
 <p>Using the <code>yao</code> data frame, group your data by age
@@ -2107,9 +2130,9 @@ below:</p>
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb35"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" tabindex="-1"></a>Q_bedridden_by_age_sex_iggresult <span class="ot">&lt;-</span> </span>
-<span id="cb35-2"><a href="#cb35-2" tabindex="-1"></a>  yao <span class="sc">%&gt;%</span></span>
-<span id="cb35-3"><a href="#cb35-3" tabindex="-1"></a>  ____________________________</span></code></pre></div>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" tabindex="-1"></a>Q_bedridden_by_age_sex_iggresult <span class="ot">&lt;-</span> </span>
+<span id="cb40-2"><a href="#cb40-2" tabindex="-1"></a>  yao <span class="sc">%&gt;%</span></span>
+<span id="cb40-3"><a href="#cb40-3" tabindex="-1"></a>  ____________________________</span></code></pre></div>
 </div>
 <hr />
 </div>
@@ -2125,21 +2148,21 @@ further analysis.</p></li>
 </ul>
 <hr />
 <p>Let’s see what the output looks like when grouping by 1 variable:</p>
-<div class="sourceCode" id="cb36"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" tabindex="-1"></a>yao <span class="sc">%&gt;%</span> </span>
-<span id="cb36-2"><a href="#cb36-2" tabindex="-1"></a>  <span class="co"># we group by sex</span></span>
-<span id="cb36-3"><a href="#cb36-3" tabindex="-1"></a>  <span class="fu">group_by</span>(_____) <span class="sc">%&gt;%</span> </span>
-<span id="cb36-4"><a href="#cb36-4" tabindex="-1"></a>  <span class="co"># and calculate the mean age</span></span>
-<span id="cb36-5"><a href="#cb36-5" tabindex="-1"></a>  <span class="fu">summarize</span>(_____________________________________________)</span></code></pre></div>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" tabindex="-1"></a>yao <span class="sc">%&gt;%</span> </span>
+<span id="cb41-2"><a href="#cb41-2" tabindex="-1"></a>  <span class="co"># we group by sex</span></span>
+<span id="cb41-3"><a href="#cb41-3" tabindex="-1"></a>  <span class="fu">group_by</span>(_____) <span class="sc">%&gt;%</span> </span>
+<span id="cb41-4"><a href="#cb41-4" tabindex="-1"></a>  <span class="co"># and calculate the mean age</span></span>
+<span id="cb41-5"><a href="#cb41-5" tabindex="-1"></a>  <span class="fu">summarize</span>(_____________________________________________)</span></code></pre></div>
 <pre><code>## Error in parse(text = input): &lt;text&gt;:3:13: unexpected input
 ## 2:   # we group by sex
 ## 3:   group_by(__
 ##                ^</code></pre>
 <hr />
 <p>Now let’s consider grouping by two variables:</p>
-<div class="sourceCode" id="cb38"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" tabindex="-1"></a>yao <span class="sc">%&gt;%</span></span>
-<span id="cb38-2"><a href="#cb38-2" tabindex="-1"></a>  <span class="co"># we group by sex and neighborhood</span></span>
-<span id="cb38-3"><a href="#cb38-3" tabindex="-1"></a>  <span class="fu">group_by</span>(_____________________) <span class="sc">%&gt;%</span> </span>
-<span id="cb38-4"><a href="#cb38-4" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">mean_age =</span> <span class="fu">mean</span>(age))</span></code></pre></div>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" tabindex="-1"></a>yao <span class="sc">%&gt;%</span></span>
+<span id="cb43-2"><a href="#cb43-2" tabindex="-1"></a>  <span class="co"># we group by sex and neighborhood</span></span>
+<span id="cb43-3"><a href="#cb43-3" tabindex="-1"></a>  <span class="fu">group_by</span>(_____________________) <span class="sc">%&gt;%</span> </span>
+<span id="cb43-4"><a href="#cb43-4" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">mean_age =</span> <span class="fu">mean</span>(age))</span></code></pre></div>
 <pre><code>## Error in parse(text = input): &lt;text&gt;:3:13: unexpected input
 ## 2:   # we group by sex and neighborhood
 ## 3:   group_by(__
@@ -2156,11 +2179,11 @@ further analysis.</p></li>
 other {dplyr} verbs.</p></li>
 <li><p>Let’s see what happens with <code>select()</code> !</p></li>
 </ul>
-<div class="sourceCode" id="cb41"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" tabindex="-1"></a>yao <span class="sc">%&gt;%</span> </span>
-<span id="cb41-2"><a href="#cb41-2" tabindex="-1"></a>  <span class="fu">group_by</span>(sex, neighborhood) <span class="sc">%&gt;%</span> </span>
-<span id="cb41-3"><a href="#cb41-3" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">mean_age =</span> <span class="fu">mean</span>(age)) <span class="sc">%&gt;%</span> </span>
-<span id="cb41-4"><a href="#cb41-4" tabindex="-1"></a>  <span class="co"># let&#39;s select mean_age</span></span>
-<span id="cb41-5"><a href="#cb41-5" tabindex="-1"></a>  <span class="fu">select</span>(____________) <span class="co"># doesn&#39;t work as expected </span></span></code></pre></div>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" tabindex="-1"></a>yao <span class="sc">%&gt;%</span> </span>
+<span id="cb46-2"><a href="#cb46-2" tabindex="-1"></a>  <span class="fu">group_by</span>(sex, neighborhood) <span class="sc">%&gt;%</span> </span>
+<span id="cb46-3"><a href="#cb46-3" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">mean_age =</span> <span class="fu">mean</span>(age)) <span class="sc">%&gt;%</span> </span>
+<span id="cb46-4"><a href="#cb46-4" tabindex="-1"></a>  <span class="co"># let&#39;s select mean_age</span></span>
+<span id="cb46-5"><a href="#cb46-5" tabindex="-1"></a>  <span class="fu">select</span>(____________) <span class="co"># doesn&#39;t work as expected </span></span></code></pre></div>
 <pre><code>## Error in parse(text = input): &lt;text&gt;:5:11: unexpected input
 ## 4:   # let&#39;s select mean_age
 ## 5:   select(__
@@ -2174,23 +2197,23 @@ ways on grouped data.</p></li>
 <li><p>So let’s learn to <strong>ungroup</strong></p></li>
 </ul>
 <hr />
-<div class="sourceCode" id="cb43"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" tabindex="-1"></a>yao <span class="sc">%&gt;%</span> </span>
-<span id="cb43-2"><a href="#cb43-2" tabindex="-1"></a>  <span class="fu">group_by</span>(sex, neighborhood) <span class="sc">%&gt;%</span> </span>
-<span id="cb43-3"><a href="#cb43-3" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">mean_age =</span> <span class="fu">mean</span>(age)) <span class="sc">%&gt;%</span> </span>
-<span id="cb43-4"><a href="#cb43-4" tabindex="-1"></a>  <span class="co"># ungroup</span></span>
-<span id="cb43-5"><a href="#cb43-5" tabindex="-1"></a>  ____________</span></code></pre></div>
+<div class="sourceCode" id="cb48"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" tabindex="-1"></a>yao <span class="sc">%&gt;%</span> </span>
+<span id="cb48-2"><a href="#cb48-2" tabindex="-1"></a>  <span class="fu">group_by</span>(sex, neighborhood) <span class="sc">%&gt;%</span> </span>
+<span id="cb48-3"><a href="#cb48-3" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">mean_age =</span> <span class="fu">mean</span>(age)) <span class="sc">%&gt;%</span> </span>
+<span id="cb48-4"><a href="#cb48-4" tabindex="-1"></a>  <span class="co"># ungroup</span></span>
+<span id="cb48-5"><a href="#cb48-5" tabindex="-1"></a>  ____________</span></code></pre></div>
 <pre><code>## Error in parse(text = input): &lt;text&gt;:5:4: unexpected input
 ## 4:   # ungroup
 ## 5:   __
 ##       ^</code></pre>
 <p>Now we can try selecting again:</p>
-<div class="sourceCode" id="cb45"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" tabindex="-1"></a>yao <span class="sc">%&gt;%</span> </span>
-<span id="cb45-2"><a href="#cb45-2" tabindex="-1"></a>  <span class="fu">group_by</span>(sex, neighborhood) <span class="sc">%&gt;%</span> </span>
-<span id="cb45-3"><a href="#cb45-3" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">mean_age =</span> <span class="fu">mean</span>(age)) <span class="sc">%&gt;%</span> </span>
-<span id="cb45-4"><a href="#cb45-4" tabindex="-1"></a>  <span class="co"># ungroup</span></span>
-<span id="cb45-5"><a href="#cb45-5" tabindex="-1"></a>  ____________</span>
-<span id="cb45-6"><a href="#cb45-6" tabindex="-1"></a>  <span class="co"># select: it behaves normally !</span></span>
-<span id="cb45-7"><a href="#cb45-7" tabindex="-1"></a>  ____________</span></code></pre></div>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" tabindex="-1"></a>yao <span class="sc">%&gt;%</span> </span>
+<span id="cb50-2"><a href="#cb50-2" tabindex="-1"></a>  <span class="fu">group_by</span>(sex, neighborhood) <span class="sc">%&gt;%</span> </span>
+<span id="cb50-3"><a href="#cb50-3" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">mean_age =</span> <span class="fu">mean</span>(age)) <span class="sc">%&gt;%</span> </span>
+<span id="cb50-4"><a href="#cb50-4" tabindex="-1"></a>  <span class="co"># ungroup</span></span>
+<span id="cb50-5"><a href="#cb50-5" tabindex="-1"></a>  ____________</span>
+<span id="cb50-6"><a href="#cb50-6" tabindex="-1"></a>  <span class="co"># select: it behaves normally !</span></span>
+<span id="cb50-7"><a href="#cb50-7" tabindex="-1"></a>  ____________</span></code></pre></div>
 <pre><code>## Error in parse(text = input): &lt;text&gt;:5:4: unexpected input
 ## 4:   # ungroup
 ## 5:   __
@@ -2211,23 +2234,23 @@ RStudio</p>
 <li><p>For example, we can count how many individuals are in each
 neighborhood group.</p></li>
 </ul>
-<div class="sourceCode" id="cb47"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" tabindex="-1"></a>yao <span class="sc">%&gt;%</span> </span>
-<span id="cb47-2"><a href="#cb47-2" tabindex="-1"></a>  <span class="co"># we group by neighborhood</span></span>
-<span id="cb47-3"><a href="#cb47-3" tabindex="-1"></a>  <span class="fu">group_by</span>(__________________) <span class="sc">%&gt;%</span> </span>
-<span id="cb47-4"><a href="#cb47-4" tabindex="-1"></a>  <span class="co"># and create a count using the n() function</span></span>
-<span id="cb47-5"><a href="#cb47-5" tabindex="-1"></a>  <span class="fu">summarize</span>(__________________)</span></code></pre></div>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" tabindex="-1"></a>yao <span class="sc">%&gt;%</span> </span>
+<span id="cb52-2"><a href="#cb52-2" tabindex="-1"></a>  <span class="co"># we group by neighborhood</span></span>
+<span id="cb52-3"><a href="#cb52-3" tabindex="-1"></a>  <span class="fu">group_by</span>(__________________) <span class="sc">%&gt;%</span> </span>
+<span id="cb52-4"><a href="#cb52-4" tabindex="-1"></a>  <span class="co"># and create a count using the n() function</span></span>
+<span id="cb52-5"><a href="#cb52-5" tabindex="-1"></a>  <span class="fu">summarize</span>(__________________)</span></code></pre></div>
 <pre><code>## Error in parse(text = input): &lt;text&gt;:3:13: unexpected input
 ## 2:   # we group by neighborhood
 ## 3:   group_by(__
 ##                ^</code></pre>
 <hr />
 <p>We can also calculate another summary statistic at the same time:</p>
-<div class="sourceCode" id="cb49"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" tabindex="-1"></a>yao <span class="sc">%&gt;%</span> </span>
-<span id="cb49-2"><a href="#cb49-2" tabindex="-1"></a>  <span class="co"># group by neighborhood</span></span>
-<span id="cb49-3"><a href="#cb49-3" tabindex="-1"></a>  <span class="fu">group_by</span>(neighborhood) <span class="sc">%&gt;%</span> </span>
-<span id="cb49-4"><a href="#cb49-4" tabindex="-1"></a>  <span class="co"># let&#39;s make a count and a mean </span></span>
-<span id="cb49-5"><a href="#cb49-5" tabindex="-1"></a>  <span class="fu">summarize</span>(__________________</span>
-<span id="cb49-6"><a href="#cb49-6" tabindex="-1"></a>            __________________)</span></code></pre></div>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" tabindex="-1"></a>yao <span class="sc">%&gt;%</span> </span>
+<span id="cb54-2"><a href="#cb54-2" tabindex="-1"></a>  <span class="co"># group by neighborhood</span></span>
+<span id="cb54-3"><a href="#cb54-3" tabindex="-1"></a>  <span class="fu">group_by</span>(neighborhood) <span class="sc">%&gt;%</span> </span>
+<span id="cb54-4"><a href="#cb54-4" tabindex="-1"></a>  <span class="co"># let&#39;s make a count and a mean </span></span>
+<span id="cb54-5"><a href="#cb54-5" tabindex="-1"></a>  <span class="fu">summarize</span>(__________________</span>
+<span id="cb54-6"><a href="#cb54-6" tabindex="-1"></a>            __________________)</span></code></pre></div>
 <pre><code>## Error in parse(text = input): &lt;text&gt;:5:14: unexpected input
 ## 4:   # let&#39;s make a count and a mean 
 ## 5:   summarize(__
@@ -2258,9 +2281,9 @@ below:</p>
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb51"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" tabindex="-1"></a>Q_occupation_summary <span class="ot">&lt;-</span> </span>
-<span id="cb51-2"><a href="#cb51-2" tabindex="-1"></a>  yao <span class="sc">%&gt;%</span></span>
-<span id="cb51-3"><a href="#cb51-3" tabindex="-1"></a>  ____________________________</span></code></pre></div>
+<div class="sourceCode" id="cb56"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" tabindex="-1"></a>Q_occupation_summary <span class="ot">&lt;-</span> </span>
+<span id="cb56-2"><a href="#cb56-2" tabindex="-1"></a>  yao <span class="sc">%&gt;%</span></span>
+<span id="cb56-3"><a href="#cb56-3" tabindex="-1"></a>  ____________________________</span></code></pre></div>
 </div>
 <hr />
 <div id="counting-rows-that-meet-a-condition" class="section level3" number="8.1">
@@ -2270,11 +2293,11 @@ meet a condition</h3>
 <li>We can <strong>place a condition within</strong> the
 <code>sum()</code> function.</li>
 </ul>
-<div class="sourceCode" id="cb52"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" tabindex="-1"></a>yao <span class="sc">%&gt;%</span> </span>
-<span id="cb52-2"><a href="#cb52-2" tabindex="-1"></a>  <span class="co"># group by neighborhood</span></span>
-<span id="cb52-3"><a href="#cb52-3" tabindex="-1"></a>  <span class="fu">group_by</span>(__________________) <span class="sc">%&gt;%</span> </span>
-<span id="cb52-4"><a href="#cb52-4" tabindex="-1"></a>  <span class="co"># let&#39;s count only those under 18</span></span>
-<span id="cb52-5"><a href="#cb52-5" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">count_under_18 =</span> __________________)</span></code></pre></div>
+<div class="sourceCode" id="cb57"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" tabindex="-1"></a>yao <span class="sc">%&gt;%</span> </span>
+<span id="cb57-2"><a href="#cb57-2" tabindex="-1"></a>  <span class="co"># group by neighborhood</span></span>
+<span id="cb57-3"><a href="#cb57-3" tabindex="-1"></a>  <span class="fu">group_by</span>(__________________) <span class="sc">%&gt;%</span> </span>
+<span id="cb57-4"><a href="#cb57-4" tabindex="-1"></a>  <span class="co"># let&#39;s count only those under 18</span></span>
+<span id="cb57-5"><a href="#cb57-5" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">count_under_18 =</span> __________________)</span></code></pre></div>
 <pre><code>## Error in parse(text = input): &lt;text&gt;:3:13: unexpected input
 ## 2:   # group by neighborhood
 ## 3:   group_by(__
@@ -2285,10 +2308,10 @@ meet a condition</h3>
 <li><p>Let’s count the number of people with doctorate degrees in each
 neighborhood</p></li>
 </ul>
-<div class="sourceCode" id="cb54"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" tabindex="-1"></a>yao <span class="sc">%&gt;%</span> </span>
-<span id="cb54-2"><a href="#cb54-2" tabindex="-1"></a>  <span class="fu">group_by</span>(neighborhood) <span class="sc">%&gt;%</span> </span>
-<span id="cb54-3"><a href="#cb54-3" tabindex="-1"></a>  <span class="co"># let&#39;s place a condition on the highest_education variable</span></span>
-<span id="cb54-4"><a href="#cb54-4" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">count_with_doctorates =</span> __________________)</span></code></pre></div>
+<div class="sourceCode" id="cb59"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" tabindex="-1"></a>yao <span class="sc">%&gt;%</span> </span>
+<span id="cb59-2"><a href="#cb59-2" tabindex="-1"></a>  <span class="fu">group_by</span>(neighborhood) <span class="sc">%&gt;%</span> </span>
+<span id="cb59-3"><a href="#cb59-3" tabindex="-1"></a>  <span class="co"># let&#39;s place a condition on the highest_education variable</span></span>
+<span id="cb59-4"><a href="#cb59-4" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">count_with_doctorates =</span> __________________)</span></code></pre></div>
 <pre><code>## Error in parse(text = input): &lt;text&gt;:4:38: unexpected input
 ## 3:   # let&#39;s place a condition on the highest_education variable
 ## 4:   summarize(count_with_doctorates = __
@@ -2302,18 +2325,18 @@ received by people with COVID-like symptoms.</p></li>
 <li><p>We will count the number of people who received <em>no
 treatment.</em></p></li>
 </ul>
-<div class="sourceCode" id="cb56"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" tabindex="-1"></a>yao <span class="sc">%&gt;%</span> </span>
-<span id="cb56-2"><a href="#cb56-2" tabindex="-1"></a>  <span class="co"># let&#39;s have a quick look at the treatment variable</span></span>
-<span id="cb56-3"><a href="#cb56-3" tabindex="-1"></a>  <span class="fu">select</span>(__________________)</span></code></pre></div>
+<div class="sourceCode" id="cb61"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" tabindex="-1"></a>yao <span class="sc">%&gt;%</span> </span>
+<span id="cb61-2"><a href="#cb61-2" tabindex="-1"></a>  <span class="co"># let&#39;s have a quick look at the treatment variable</span></span>
+<span id="cb61-3"><a href="#cb61-3" tabindex="-1"></a>  <span class="fu">select</span>(__________________)</span></code></pre></div>
 <pre><code>## Error in parse(text = input): &lt;text&gt;:3:11: unexpected input
 ## 2:   # let&#39;s have a quick look at the treatment variable
 ## 3:   select(__
 ##              ^</code></pre>
-<div class="sourceCode" id="cb58"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" tabindex="-1"></a>yao <span class="sc">%&gt;%</span> </span>
-<span id="cb58-2"><a href="#cb58-2" tabindex="-1"></a>  <span class="co"># let&#39;s group by neighborhood</span></span>
-<span id="cb58-3"><a href="#cb58-3" tabindex="-1"></a>  <span class="fu">group_by</span>(neighborhood) <span class="sc">%&gt;%</span> </span>
-<span id="cb58-4"><a href="#cb58-4" tabindex="-1"></a>  <span class="co"># let&#39;s set a condition on the NA to count the no treatments</span></span>
-<span id="cb58-5"><a href="#cb58-5" tabindex="-1"></a>  <span class="fu">summarize</span>(____________________________________)</span></code></pre></div>
+<div class="sourceCode" id="cb63"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" tabindex="-1"></a>yao <span class="sc">%&gt;%</span> </span>
+<span id="cb63-2"><a href="#cb63-2" tabindex="-1"></a>  <span class="co"># let&#39;s group by neighborhood</span></span>
+<span id="cb63-3"><a href="#cb63-3" tabindex="-1"></a>  <span class="fu">group_by</span>(neighborhood) <span class="sc">%&gt;%</span> </span>
+<span id="cb63-4"><a href="#cb63-4" tabindex="-1"></a>  <span class="co"># let&#39;s set a condition on the NA to count the no treatments</span></span>
+<span id="cb63-5"><a href="#cb63-5" tabindex="-1"></a>  <span class="fu">summarize</span>(____________________________________)</span></code></pre></div>
 <pre><code>## Error in parse(text = input): &lt;text&gt;:5:14: unexpected input
 ## 4:   # let&#39;s set a condition on the NA to count the no treatments
 ## 5:   summarize(__
@@ -2332,14 +2355,14 @@ DECIDED TO REMOVE IT.</p>
 group</strong>.</p></li>
 <li><p>Let’s count our <code>occupation</code> variable.</p></li>
 </ul>
-<div class="sourceCode" id="cb60"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" tabindex="-1"></a>yao <span class="sc">%&gt;%</span> _________________________</span></code></pre></div>
+<div class="sourceCode" id="cb65"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" tabindex="-1"></a>yao <span class="sc">%&gt;%</span> _________________________</span></code></pre></div>
 <pre><code>## Error in parse(text = input): &lt;text&gt;:1:10: unexpected input
 ## 1: yao %&gt;% __
 ##              ^</code></pre>
 <p>Note that this is the same output as:</p>
-<div class="sourceCode" id="cb62"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" tabindex="-1"></a>yao <span class="sc">%&gt;%</span></span>
-<span id="cb62-2"><a href="#cb62-2" tabindex="-1"></a>  <span class="fu">group_by</span>(occupation) <span class="sc">%&gt;%</span></span>
-<span id="cb62-3"><a href="#cb62-3" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">n =</span> <span class="fu">n</span>())</span></code></pre></div>
+<div class="sourceCode" id="cb67"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" tabindex="-1"></a>yao <span class="sc">%&gt;%</span></span>
+<span id="cb67-2"><a href="#cb67-2" tabindex="-1"></a>  <span class="fu">group_by</span>(occupation) <span class="sc">%&gt;%</span></span>
+<span id="cb67-3"><a href="#cb67-3" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">n =</span> <span class="fu">n</span>())</span></code></pre></div>
 <pre><code>## # A tibble: 28 × 2
 ##    occupation                              n
 ##    &lt;chr&gt;                               &lt;int&gt;
@@ -2357,9 +2380,9 @@ group</strong>.</p></li>
 <hr />
 <p>You can also apply <code>dplyr::count()</code> in a nested
 fashion:</p>
-<div class="sourceCode" id="cb64"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" tabindex="-1"></a>yao <span class="sc">%&gt;%</span></span>
-<span id="cb64-2"><a href="#cb64-2" tabindex="-1"></a>  <span class="co"># let&#39;s count by sex and occupation</span></span>
-<span id="cb64-3"><a href="#cb64-3" tabindex="-1"></a>  <span class="fu">count</span>(_________________________)</span></code></pre></div>
+<div class="sourceCode" id="cb69"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" tabindex="-1"></a>yao <span class="sc">%&gt;%</span></span>
+<span id="cb69-2"><a href="#cb69-2" tabindex="-1"></a>  <span class="co"># let&#39;s count by sex and occupation</span></span>
+<span id="cb69-3"><a href="#cb69-3" tabindex="-1"></a>  <span class="fu">count</span>(_________________________)</span></code></pre></div>
 <pre><code>## Error in parse(text = input): &lt;text&gt;:3:10: unexpected input
 ## 2:   # let&#39;s count by sex and occupation
 ## 3:   count(__
@@ -2394,9 +2417,9 @@ below:</p>
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb66"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" tabindex="-1"></a>Q_count_iggresults_stratified_by_sex_agecategories <span class="ot">&lt;-</span> </span>
-<span id="cb66-2"><a href="#cb66-2" tabindex="-1"></a>  yao <span class="sc">%&gt;%</span></span>
-<span id="cb66-3"><a href="#cb66-3" tabindex="-1"></a>  ____________________________</span></code></pre></div>
+<div class="sourceCode" id="cb71"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" tabindex="-1"></a>Q_count_iggresults_stratified_by_sex_agecategories <span class="ot">&lt;-</span> </span>
+<span id="cb71-2"><a href="#cb71-2" tabindex="-1"></a>  yao <span class="sc">%&gt;%</span></span>
+<span id="cb71-3"><a href="#cb71-3" tabindex="-1"></a>  ____________________________</span></code></pre></div>
 <p>Using the <code>yao</code> data frame, count the different
 combinations of age categories (<code>age_category_3</code>) and number
 of bedridden days (<code>n_bedridden_days</code>).</p>
@@ -2418,9 +2441,9 @@ below:</p>
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb67"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" tabindex="-1"></a>Q_count_bedridden_age_categories <span class="ot">&lt;-</span> </span>
-<span id="cb67-2"><a href="#cb67-2" tabindex="-1"></a>  yao <span class="sc">%&gt;%</span></span>
-<span id="cb67-3"><a href="#cb67-3" tabindex="-1"></a>  ____________________________</span></code></pre></div>
+<div class="sourceCode" id="cb72"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" tabindex="-1"></a>Q_count_bedridden_age_categories <span class="ot">&lt;-</span> </span>
+<span id="cb72-2"><a href="#cb72-2" tabindex="-1"></a>  yao <span class="sc">%&gt;%</span></span>
+<span id="cb72-3"><a href="#cb72-3" tabindex="-1"></a>  ____________________________</span></code></pre></div>
 </div>
 <hr />
 </div>
@@ -2444,31 +2467,31 @@ this.</p></li>
 <li><p>We artificially drop all male children from the <code>yao</code>
 data frame.</p></li>
 </ul>
-<div class="sourceCode" id="cb68"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" tabindex="-1"></a>yao_no_male_children <span class="ot">&lt;-</span> </span>
-<span id="cb68-2"><a href="#cb68-2" tabindex="-1"></a>  yao <span class="sc">%&gt;%</span> </span>
-<span id="cb68-3"><a href="#cb68-3" tabindex="-1"></a>  <span class="co"># we leave out all male children</span></span>
-<span id="cb68-4"><a href="#cb68-4" tabindex="-1"></a>  <span class="fu">filter</span>(_______________________________)</span></code></pre></div>
+<div class="sourceCode" id="cb73"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1" tabindex="-1"></a>yao_no_male_children <span class="ot">&lt;-</span> </span>
+<span id="cb73-2"><a href="#cb73-2" tabindex="-1"></a>  yao <span class="sc">%&gt;%</span> </span>
+<span id="cb73-3"><a href="#cb73-3" tabindex="-1"></a>  <span class="co"># we leave out all male children</span></span>
+<span id="cb73-4"><a href="#cb73-4" tabindex="-1"></a>  <span class="fu">filter</span>(_______________________________)</span></code></pre></div>
 <pre><code>## Error in parse(text = input): &lt;text&gt;:4:11: unexpected input
 ## 3:   # we leave out all male children
 ## 4:   filter(__
 ##              ^</code></pre>
 <p>Let’s see the missing combination:</p>
-<div class="sourceCode" id="cb70"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" tabindex="-1"></a>yao_no_male_children <span class="sc">%&gt;%</span> </span>
-<span id="cb70-2"><a href="#cb70-2" tabindex="-1"></a>  <span class="co"># let&#39;s group by sex and age_category_3  </span></span>
-<span id="cb70-3"><a href="#cb70-3" tabindex="-1"></a>  <span class="fu">group_by</span>(_______________________________) <span class="sc">%&gt;%</span> </span>
-<span id="cb70-4"><a href="#cb70-4" tabindex="-1"></a>  <span class="co"># let&#39;s get the number of individuals</span></span>
-<span id="cb70-5"><a href="#cb70-5" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">number_of_individuals =</span> _______________________________)</span></code></pre></div>
+<div class="sourceCode" id="cb75"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb75-1"><a href="#cb75-1" tabindex="-1"></a>yao_no_male_children <span class="sc">%&gt;%</span> </span>
+<span id="cb75-2"><a href="#cb75-2" tabindex="-1"></a>  <span class="co"># let&#39;s group by sex and age_category_3  </span></span>
+<span id="cb75-3"><a href="#cb75-3" tabindex="-1"></a>  <span class="fu">group_by</span>(_______________________________) <span class="sc">%&gt;%</span> </span>
+<span id="cb75-4"><a href="#cb75-4" tabindex="-1"></a>  <span class="co"># let&#39;s get the number of individuals</span></span>
+<span id="cb75-5"><a href="#cb75-5" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">number_of_individuals =</span> _______________________________)</span></code></pre></div>
 <pre><code>## Error in parse(text = input): &lt;text&gt;:3:13: unexpected input
 ## 2:   # let&#39;s group by sex and age_category_3  
 ## 3:   group_by(__
 ##                ^</code></pre>
 <p>Let’s include this <strong>missing combinations:</strong></p>
-<div class="sourceCode" id="cb72"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" tabindex="-1"></a>yao_no_male_children <span class="sc">%&gt;%</span> </span>
-<span id="cb72-2"><a href="#cb72-2" tabindex="-1"></a>  <span class="co"># For these combinations, you must convert the variables to factors</span></span>
-<span id="cb72-3"><a href="#cb72-3" tabindex="-1"></a>  <span class="fu">mutate</span>(_______________________________) <span class="sc">%&gt;%</span> </span>
-<span id="cb72-4"><a href="#cb72-4" tabindex="-1"></a>  <span class="co"># Note the the .drop = FALSE argument</span></span>
-<span id="cb72-5"><a href="#cb72-5" tabindex="-1"></a>  <span class="fu">group_by</span>(_______________________________ <span class="sc">%&gt;%</span> </span>
-<span id="cb72-6"><a href="#cb72-6" tabindex="-1"></a>  <span class="fu">summarise</span>(_______________________________)</span></code></pre></div>
+<div class="sourceCode" id="cb77"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb77-1"><a href="#cb77-1" tabindex="-1"></a>yao_no_male_children <span class="sc">%&gt;%</span> </span>
+<span id="cb77-2"><a href="#cb77-2" tabindex="-1"></a>  <span class="co"># For these combinations, you must convert the variables to factors</span></span>
+<span id="cb77-3"><a href="#cb77-3" tabindex="-1"></a>  <span class="fu">mutate</span>(_______________________________) <span class="sc">%&gt;%</span> </span>
+<span id="cb77-4"><a href="#cb77-4" tabindex="-1"></a>  <span class="co"># Note the the .drop = FALSE argument</span></span>
+<span id="cb77-5"><a href="#cb77-5" tabindex="-1"></a>  <span class="fu">group_by</span>(_______________________________ <span class="sc">%&gt;%</span> </span>
+<span id="cb77-6"><a href="#cb77-6" tabindex="-1"></a>  <span class="fu">summarise</span>(_______________________________)</span></code></pre></div>
 <pre><code>## Error in parse(text = input): &lt;text&gt;:3:11: unexpected input
 ## 2:   # For these combinations, you must convert the variables to factors
 ## 3:   mutate(__
@@ -2481,26 +2504,26 @@ and education group</strong>.</p></li>
 <li><p>These combinations do not include the group
 “Female—Other”.</p></li>
 </ul>
-<div class="sourceCode" id="cb74"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" tabindex="-1"></a>yao <span class="sc">%&gt;%</span> </span>
-<span id="cb74-2"><a href="#cb74-2" tabindex="-1"></a>  <span class="co"># let&#39;s group by WITHOUT accounting for missing combinations</span></span>
-<span id="cb74-3"><a href="#cb74-3" tabindex="-1"></a>  <span class="co"># we group by sex and highest_eduction</span></span>
-<span id="cb74-4"><a href="#cb74-4" tabindex="-1"></a>  <span class="fu">group_by</span>(_______________________________) <span class="sc">%&gt;%</span> </span>
-<span id="cb74-5"><a href="#cb74-5" tabindex="-1"></a>  <span class="co"># we summarize to have the mean age</span></span>
-<span id="cb74-6"><a href="#cb74-6" tabindex="-1"></a>  <span class="fu">summarise</span>(_______________________________)</span></code></pre></div>
+<div class="sourceCode" id="cb79"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb79-1"><a href="#cb79-1" tabindex="-1"></a>yao <span class="sc">%&gt;%</span> </span>
+<span id="cb79-2"><a href="#cb79-2" tabindex="-1"></a>  <span class="co"># let&#39;s group by WITHOUT accounting for missing combinations</span></span>
+<span id="cb79-3"><a href="#cb79-3" tabindex="-1"></a>  <span class="co"># we group by sex and highest_eduction</span></span>
+<span id="cb79-4"><a href="#cb79-4" tabindex="-1"></a>  <span class="fu">group_by</span>(_______________________________) <span class="sc">%&gt;%</span> </span>
+<span id="cb79-5"><a href="#cb79-5" tabindex="-1"></a>  <span class="co"># we summarize to have the mean age</span></span>
+<span id="cb79-6"><a href="#cb79-6" tabindex="-1"></a>  <span class="fu">summarise</span>(_______________________________)</span></code></pre></div>
 <pre><code>## Error in parse(text = input): &lt;text&gt;:4:13: unexpected input
 ## 3:   # we group by sex and highest_eduction
 ## 4:   group_by(__
 ##                ^</code></pre>
 <p>There are 7 rows for men but only 6 rows for women.</p>
 <p>Let’s include this missing combination:</p>
-<div class="sourceCode" id="cb76"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1" tabindex="-1"></a>yao <span class="sc">%&gt;%</span> </span>
-<span id="cb76-2"><a href="#cb76-2" tabindex="-1"></a>  <span class="co"># we need to make sure the grouping variables are factors</span></span>
-<span id="cb76-3"><a href="#cb76-3" tabindex="-1"></a>  <span class="fu">mutate</span>(_______________________________</span>
-<span id="cb76-4"><a href="#cb76-4" tabindex="-1"></a>         _______________________________) <span class="sc">%&gt;%</span> </span>
-<span id="cb76-5"><a href="#cb76-5" tabindex="-1"></a>  <span class="co"># we group by sex and highest_education</span></span>
-<span id="cb76-6"><a href="#cb76-6" tabindex="-1"></a>  <span class="fu">group_by</span>(_______________________________) <span class="sc">%&gt;%</span> </span>
-<span id="cb76-7"><a href="#cb76-7" tabindex="-1"></a>  <span class="co"># we summarize for mean age</span></span>
-<span id="cb76-8"><a href="#cb76-8" tabindex="-1"></a>  <span class="fu">summarise</span>(_______________________________)</span></code></pre></div>
+<div class="sourceCode" id="cb81"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb81-1"><a href="#cb81-1" tabindex="-1"></a>yao <span class="sc">%&gt;%</span> </span>
+<span id="cb81-2"><a href="#cb81-2" tabindex="-1"></a>  <span class="co"># we need to make sure the grouping variables are factors</span></span>
+<span id="cb81-3"><a href="#cb81-3" tabindex="-1"></a>  <span class="fu">mutate</span>(_______________________________</span>
+<span id="cb81-4"><a href="#cb81-4" tabindex="-1"></a>         _______________________________) <span class="sc">%&gt;%</span> </span>
+<span id="cb81-5"><a href="#cb81-5" tabindex="-1"></a>  <span class="co"># we group by sex and highest_education</span></span>
+<span id="cb81-6"><a href="#cb81-6" tabindex="-1"></a>  <span class="fu">group_by</span>(_______________________________) <span class="sc">%&gt;%</span> </span>
+<span id="cb81-7"><a href="#cb81-7" tabindex="-1"></a>  <span class="co"># we summarize for mean age</span></span>
+<span id="cb81-8"><a href="#cb81-8" tabindex="-1"></a>  <span class="fu">summarise</span>(_______________________________)</span></code></pre></div>
 <pre><code>## Error in parse(text = input): &lt;text&gt;:3:11: unexpected input
 ## 2:   # we need to make sure the grouping variables are factors
 ## 3:   mutate(__
@@ -2536,9 +2559,9 @@ below:</p>
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb78"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb78-1"><a href="#cb78-1" tabindex="-1"></a>Q_median_age_by_neighborhood_agecategory_sex <span class="ot">&lt;-</span> </span>
-<span id="cb78-2"><a href="#cb78-2" tabindex="-1"></a>  yao <span class="sc">%&gt;%</span></span>
-<span id="cb78-3"><a href="#cb78-3" tabindex="-1"></a>  ____________________________</span></code></pre></div>
+<div class="sourceCode" id="cb83"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb83-1"><a href="#cb83-1" tabindex="-1"></a>Q_median_age_by_neighborhood_agecategory_sex <span class="ot">&lt;-</span> </span>
+<span id="cb83-2"><a href="#cb83-2" tabindex="-1"></a>  yao <span class="sc">%&gt;%</span></span>
+<span id="cb83-3"><a href="#cb83-3" tabindex="-1"></a>  ____________________________</span></code></pre></div>
 </div>
 <hr />
 <div class="side-note">
@@ -2550,15 +2573,15 @@ below:</p>
 <code>yao_no_male_children</code></p></li>
 </ul>
 <hr />
-<div class="sourceCode" id="cb79"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb79-1"><a href="#cb79-1" tabindex="-1"></a>yao_no_male_children <span class="sc">%&gt;%</span> </span>
-<span id="cb79-2"><a href="#cb79-2" tabindex="-1"></a>  <span class="fu">group_by</span>(sex, age_category_3) <span class="sc">%&gt;%</span> </span>
-<span id="cb79-3"><a href="#cb79-3" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">number_of_individuals =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span> </span>
-<span id="cb79-4"><a href="#cb79-4" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb79-5"><a href="#cb79-5" tabindex="-1"></a>  </span>
-<span id="cb79-6"><a href="#cb79-6" tabindex="-1"></a>  <span class="co"># pass the output to ggplot</span></span>
-<span id="cb79-7"><a href="#cb79-7" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span> </span>
-<span id="cb79-8"><a href="#cb79-8" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="fu">aes</span>(<span class="at">x =</span> sex, <span class="at">y =</span> number_of_individuals, <span class="at">fill =</span> age_category_3), </span>
-<span id="cb79-9"><a href="#cb79-9" tabindex="-1"></a>           <span class="at">position =</span> <span class="st">&quot;dodge&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb84"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb84-1"><a href="#cb84-1" tabindex="-1"></a>yao_no_male_children <span class="sc">%&gt;%</span> </span>
+<span id="cb84-2"><a href="#cb84-2" tabindex="-1"></a>  <span class="fu">group_by</span>(sex, age_category_3) <span class="sc">%&gt;%</span> </span>
+<span id="cb84-3"><a href="#cb84-3" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">number_of_individuals =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span> </span>
+<span id="cb84-4"><a href="#cb84-4" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb84-5"><a href="#cb84-5" tabindex="-1"></a>  </span>
+<span id="cb84-6"><a href="#cb84-6" tabindex="-1"></a>  <span class="co"># pass the output to ggplot</span></span>
+<span id="cb84-7"><a href="#cb84-7" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span> </span>
+<span id="cb84-8"><a href="#cb84-8" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="fu">aes</span>(<span class="at">x =</span> sex, <span class="at">y =</span> number_of_individuals, <span class="at">fill =</span> age_category_3), </span>
+<span id="cb84-9"><a href="#cb84-9" tabindex="-1"></a>           <span class="at">position =</span> <span class="st">&quot;dodge&quot;</span>)</span></code></pre></div>
 <pre><code>## Error:
 ## ! object &#39;yao_no_male_children&#39; not found</code></pre>
 <hr />
@@ -2568,37 +2591,37 @@ below:</p>
 children</strong>.</p></li>
 <li><p>Let’s account for the missing group.</p></li>
 </ul>
-<div class="sourceCode" id="cb81"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb81-1"><a href="#cb81-1" tabindex="-1"></a>yao_no_male_children <span class="sc">%&gt;%</span> </span>
-<span id="cb81-2"><a href="#cb81-2" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">sex =</span> <span class="fu">as.factor</span>(sex), </span>
-<span id="cb81-3"><a href="#cb81-3" tabindex="-1"></a>         <span class="at">age_category_3 =</span> <span class="fu">as.factor</span>(age_category_3)) <span class="sc">%&gt;%</span> </span>
-<span id="cb81-4"><a href="#cb81-4" tabindex="-1"></a>  <span class="fu">group_by</span>(sex, age_category_3, <span class="at">.drop =</span> <span class="cn">FALSE</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb81-5"><a href="#cb81-5" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">number_of_individuals =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span> </span>
-<span id="cb81-6"><a href="#cb81-6" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb81-7"><a href="#cb81-7" tabindex="-1"></a>  </span>
-<span id="cb81-8"><a href="#cb81-8" tabindex="-1"></a>  <span class="co"># pass the output to ggplot</span></span>
-<span id="cb81-9"><a href="#cb81-9" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span> </span>
-<span id="cb81-10"><a href="#cb81-10" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="fu">aes</span>(<span class="at">x =</span> sex, <span class="at">y =</span> number_of_individuals, <span class="at">fill =</span> age_category_3), </span>
-<span id="cb81-11"><a href="#cb81-11" tabindex="-1"></a>           <span class="at">position =</span> <span class="st">&quot;dodge&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb86"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb86-1"><a href="#cb86-1" tabindex="-1"></a>yao_no_male_children <span class="sc">%&gt;%</span> </span>
+<span id="cb86-2"><a href="#cb86-2" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">sex =</span> <span class="fu">as.factor</span>(sex), </span>
+<span id="cb86-3"><a href="#cb86-3" tabindex="-1"></a>         <span class="at">age_category_3 =</span> <span class="fu">as.factor</span>(age_category_3)) <span class="sc">%&gt;%</span> </span>
+<span id="cb86-4"><a href="#cb86-4" tabindex="-1"></a>  <span class="fu">group_by</span>(sex, age_category_3, <span class="at">.drop =</span> <span class="cn">FALSE</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb86-5"><a href="#cb86-5" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">number_of_individuals =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span> </span>
+<span id="cb86-6"><a href="#cb86-6" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb86-7"><a href="#cb86-7" tabindex="-1"></a>  </span>
+<span id="cb86-8"><a href="#cb86-8" tabindex="-1"></a>  <span class="co"># pass the output to ggplot</span></span>
+<span id="cb86-9"><a href="#cb86-9" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span> </span>
+<span id="cb86-10"><a href="#cb86-10" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="fu">aes</span>(<span class="at">x =</span> sex, <span class="at">y =</span> number_of_individuals, <span class="at">fill =</span> age_category_3), </span>
+<span id="cb86-11"><a href="#cb86-11" tabindex="-1"></a>           <span class="at">position =</span> <span class="st">&quot;dodge&quot;</span>)</span></code></pre></div>
 <pre><code>## Error:
 ## ! object &#39;yao_no_male_children&#39; not found</code></pre>
 <p>Much better!</p>
 <p>By the way, this output can be improved slightly by setting the
 factor levels for age to their proper ascending order: first “Child”,
 then “Adult” then “Senior”:</p>
-<div class="sourceCode" id="cb83"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb83-1"><a href="#cb83-1" tabindex="-1"></a>yao_no_male_children <span class="sc">%&gt;%</span> </span>
-<span id="cb83-2"><a href="#cb83-2" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">sex =</span> <span class="fu">as.factor</span>(sex), </span>
-<span id="cb83-3"><a href="#cb83-3" tabindex="-1"></a>         <span class="at">age_category_3 =</span> <span class="fu">factor</span>(age_category_3, </span>
-<span id="cb83-4"><a href="#cb83-4" tabindex="-1"></a>                                 <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">&quot;Child&quot;</span>, </span>
-<span id="cb83-5"><a href="#cb83-5" tabindex="-1"></a>                                            <span class="st">&quot;Adult&quot;</span>, </span>
-<span id="cb83-6"><a href="#cb83-6" tabindex="-1"></a>                                            <span class="st">&quot;Senior&quot;</span>))) <span class="sc">%&gt;%</span> </span>
-<span id="cb83-7"><a href="#cb83-7" tabindex="-1"></a>  <span class="fu">group_by</span>(sex, age_category_3, <span class="at">.drop =</span> <span class="cn">FALSE</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb83-8"><a href="#cb83-8" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">number_of_individuals =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span> </span>
-<span id="cb83-9"><a href="#cb83-9" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb83-10"><a href="#cb83-10" tabindex="-1"></a>  </span>
-<span id="cb83-11"><a href="#cb83-11" tabindex="-1"></a>  <span class="co"># pass the output to ggplot</span></span>
-<span id="cb83-12"><a href="#cb83-12" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span> </span>
-<span id="cb83-13"><a href="#cb83-13" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="fu">aes</span>(<span class="at">x =</span> sex, <span class="at">y =</span> number_of_individuals, <span class="at">fill =</span> age_category_3), </span>
-<span id="cb83-14"><a href="#cb83-14" tabindex="-1"></a>           <span class="at">position =</span> <span class="st">&quot;dodge&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb88"><pre class="sourceCode r tgc-code-block"><code class="sourceCode r"><span id="cb88-1"><a href="#cb88-1" tabindex="-1"></a>yao_no_male_children <span class="sc">%&gt;%</span> </span>
+<span id="cb88-2"><a href="#cb88-2" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">sex =</span> <span class="fu">as.factor</span>(sex), </span>
+<span id="cb88-3"><a href="#cb88-3" tabindex="-1"></a>         <span class="at">age_category_3 =</span> <span class="fu">factor</span>(age_category_3, </span>
+<span id="cb88-4"><a href="#cb88-4" tabindex="-1"></a>                                 <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">&quot;Child&quot;</span>, </span>
+<span id="cb88-5"><a href="#cb88-5" tabindex="-1"></a>                                            <span class="st">&quot;Adult&quot;</span>, </span>
+<span id="cb88-6"><a href="#cb88-6" tabindex="-1"></a>                                            <span class="st">&quot;Senior&quot;</span>))) <span class="sc">%&gt;%</span> </span>
+<span id="cb88-7"><a href="#cb88-7" tabindex="-1"></a>  <span class="fu">group_by</span>(sex, age_category_3, <span class="at">.drop =</span> <span class="cn">FALSE</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb88-8"><a href="#cb88-8" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">number_of_individuals =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span> </span>
+<span id="cb88-9"><a href="#cb88-9" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb88-10"><a href="#cb88-10" tabindex="-1"></a>  </span>
+<span id="cb88-11"><a href="#cb88-11" tabindex="-1"></a>  <span class="co"># pass the output to ggplot</span></span>
+<span id="cb88-12"><a href="#cb88-12" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span> </span>
+<span id="cb88-13"><a href="#cb88-13" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="fu">aes</span>(<span class="at">x =</span> sex, <span class="at">y =</span> number_of_individuals, <span class="at">fill =</span> age_category_3), </span>
+<span id="cb88-14"><a href="#cb88-14" tabindex="-1"></a>           <span class="at">position =</span> <span class="st">&quot;dodge&quot;</span>)</span></code></pre></div>
 <pre><code>## Error:
 ## ! object &#39;yao_no_male_children&#39; not found</code></pre>
 </div>

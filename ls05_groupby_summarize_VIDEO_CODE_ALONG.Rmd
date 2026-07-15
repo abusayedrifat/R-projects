@@ -270,15 +270,15 @@ Great! With just a few code lines you are able to extract quite a bit of informa
 ```{r}
 yao %>% 
   # let's keep only n_days_miss_work
-  select(______________________)
+  select(id,n_days_miss_work)
 ```
 
 ```{r}
 yao %>%
   # let's group by sex
-  group_by(____) %>% 
+  group_by(sex) %>% 
   # let's sum the number of work days missed
-  summarise(total_days_missed = _________________________________)
+  summarise(total_days_missed = mean(n_days_miss_work, na.rm = TRUE))
 ```
 
 ------------------------------------------------------------------------
@@ -306,8 +306,9 @@ The output data frame should look like this:
 ```{r eval = FALSE}
 Q_weight_by_smoking_status <- 
   yao %>% 
-  ________________________
-  ________________________
+  group_by(is_smoker) %>% 
+  summarize(weight_mean = mean(weight_kg))
+Q_weight_by_smoking_status
 ```
 
 ```{r include = FALSE}
@@ -329,11 +330,14 @@ Your output should be a data frame with three columns named as shown below:
 ```{r eval = FALSE}
 Q_min_max_height_by_sex <- 
   yao %>% 
-  ________________________
-  ________________________
+  group_by(sex) %>% 
+  summarize(min_height_cm = min(height_cm, na.rm = TRUE),
+            max_height_cm = max(height_cm, na.rm = TRUE))
+
+Q_min_max_height_by_sex
 ```
 
-```{r include = FALSE}
+```{r }
 .CHECK_Q_min_max_height_by_sex()
 .HINT_Q_min_max_height_by_sex()
 ```
@@ -349,14 +353,15 @@ Your output should be a data frame with two columns named as shown below:
 | Female |                      |
 | Male   |                      |
 
-```{r eval = FALSE}
+```{r}
 Q_sum_bedridden_days <- 
   yao %>% 
-  ________________________
-  ________________________
+  group_by(sex) %>% 
+  summarize(total_bedridden_days = sum(n_bedridden_days, na.rm = TRUE))
+Q_sum_bedridden_days
 ```
 
-```{r include = FALSE}
+```{r include=FALSE}
 .CHECK_Q_sum_bedridden_days()
 .HINT_Q_sum_bedridden_days()
 ```
@@ -377,9 +382,9 @@ Q_sum_bedridden_days <-
 ```{r}
 yao %>%
   # let's group by sex and neighborhood
-  group_by(__________________________) %>% 
+  group_by(sex, neighborhood ) %>% 
   # we summarize to get the mean age
-  summarize(__________________________)
+  summarize(mean_age = mean(age))
 ```
 
 ------------------------------------------------------------------------
@@ -412,13 +417,17 @@ Your output should be a data frame with three columns named as shown below:
 |-----|------------------------|----------------|
 |     |                        |                |
 
-```{r, eval = FALSE}
+```{r}
 Q_weight_by_sex_treatments <- 
   yao %>%
-  ____________________________
+  group_by(sex, treatment_combinations) %>% 
+  summarize(mean_weight_kg = mean(weight_kg))
+
+Q_weight_by_sex_treatments
+
 ```
 
-```{r, include = FALSE}
+```{r}
 .CHECK_Q_weight_by_sex_treatments()
 .HINT_Q_weight_by_sex_treatments()
 ```
@@ -433,13 +442,15 @@ Your output should be a data frame with three columns named as shown below:
 |--------------|-----|------------|-----------------------|
 |              |     |            |                       |
 
-```{r, eval = FALSE}
+```{r}
 Q_bedridden_by_age_sex_iggresult <- 
   yao %>%
-  ____________________________
+  group_by(age_category_3, sex, igg_result) %>% 
+  summarize(mean_n_bedridden_days = mean(n_bedridden_days, na.rm = TRUE))
+Q_bedridden_by_age_sex_iggresult
 ```
 
-```{r, include = FALSE}
+```{r}
 .CHECK_Q_bedridden_by_age_sex_iggresult()
 .HINT_Q_bedridden_by_age_sex_iggresult()
 ```
