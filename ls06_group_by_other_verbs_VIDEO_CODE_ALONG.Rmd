@@ -338,7 +338,7 @@ yao_sex_weight %>%
 ```{r}
 yao %>% 
   # let's group by sex and age category now !
-  group_by(_______________________) %>% 
+  group_by(sex, age_category) %>% 
   mutate(weight_rank = rank(desc(weight_kg)))
 ```
 
@@ -348,9 +348,13 @@ The output shows that the person in the first row is 20th heaviest *woman in the
 With the `sarcopenia` data, group by `age_group`, then in a new variable called `grip_strength_rank`, compute the per-age-group rank of each individual's grip strength. (To compute the rank, use `mutate()` and the `rank()` function with its default ties method.)
 
 ```{r eval = FALSE}
-# Complete the code with your answer:
+# Complete the code with your answer: 
 Q_rank_grip_strength <- 
-  sarcopenia
+  sarcopenia %>% 
+  group_by(age_group) %>% 
+  mutate(grip_strength_rank = rank(grip_strength_kg))  %>% 
+  select(age_group, grip_strength_rank, grip_strength_kg)
+Q_rank_grip_strength
 ```
 
 ```{r include = FALSE}
