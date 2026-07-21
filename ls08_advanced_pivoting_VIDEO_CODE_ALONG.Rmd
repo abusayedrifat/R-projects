@@ -389,8 +389,8 @@ Pivot the dataset so that it resembles the following structure
 enteropathogens_zambia_long <- 
   enteropathogens_zambia_wide %>% 
   pivot_longer(!ID, 
-               names_to = c(".value", "sample_count"), 
-               names_sep = "_")
+               names_sep = "_",
+               names_to = c(".value", "sample_count"))
 
 enteropathogens_zambia_long
 ```
@@ -422,8 +422,8 @@ To pivot this to one-row per person, we'll again need the `names_sep` and `names
 ```{r eval = FALSE}
 family_stats %>% 
   pivot_longer(2:5, 
-               names_sep  = _____,
-               names_to = c(__________))
+               names_sep  = "_",
+               names_to = c("family_member",".value"))
 ```
 
 The separator is an underscore, "\_", so we used `names_sep  = "_"` and because the value types come after the separator, the ".value" identifier was placed second in the `names_to` argument.
@@ -442,13 +442,15 @@ child_stats_dot_sep <-
     )
 ```
 
-In such cases, you'll need to provide the string "\\." to indicate a dot "." because the "." is a special character in R, and sometimes needs to be "escaped" with slashes:
+In such cases, you'll need to provide the string "\\\\." to indicate a dot "." because the "." is a special character in R, and sometimes needs to be "escaped" with slashes:
 
 ```{r eval = FALSE}
 child_stats_dot_sep %>% 
   pivot_longer(2:5, 
-               names_to = __________,
-               names_sep = __________)
+               names_to = c("year",".value"),
+               names_sep ="\\." )
+
+# here "\\" used for escaping special character error
 ```
 
 To learn more about escaping, you can visit this [site.](https://cran.r-project.org/web/packages/stringr/vignettes/regular-expressions.html#escaping){target="_blank"}
@@ -480,7 +482,10 @@ Again, pivot the data into a long format to get the following structure:
 ```{r, eval = FALSE}
 Q_adult2_long <-
   adult_stats_dot_sep %>%
-  pivot_longer(_________)
+  pivot_longer(2:5,
+               names_sep = "\\.",
+               names_to = c(".value","year"))
+Q_adult2_long
 ```
 
 ```{r, eval = FALSE, include = FALSE}
@@ -585,10 +590,26 @@ You should first distinguish if we have a neat operator or not. Based on this, r
 |              |       |              |       |         |       |
 |              |       |              |       |         |       |
 
-```{r, eval = FALSE}
+```{r}
 Q_diet_diversity_vietnam_long <-
-  diet_diversity_vietnam_wide %>%
-  pivot_longer(_________)
+  diet_diversity_vietnam_wide |> 
+  rename(
+    enerc_kcal_w__1 = enerc_kcal_w_1,
+    enerc_kcal_w__2 = enerc_kcal_w_2,
+    dry_w__1 = dry_w_1,
+    dry_w__2 = dry_w_2,
+    water_w__1 = water_w_1,
+    water_w__2 = water_w_2,
+    fat_w__1 = fat_w_1,
+    fat_w__2 = fat_w_2
+    ) |> 
+  pivot_longer(2:9,
+               names_sep = "__",
+               names_to = c(".value","visit")) |> 
+  dt(Q_diet_diversity_vietnam_long)
+
+
+
 ```
 
 ```{r, eval = FALSE, include = FALSE}
