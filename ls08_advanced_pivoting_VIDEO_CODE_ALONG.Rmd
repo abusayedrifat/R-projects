@@ -273,9 +273,9 @@ Here, in the column names there are three value types occurring after the "\_" s
 
 ```{r eval = FALSE}
 child_stats_three_values %>% 
-  pivot_longer(________________________, 
-               ________________________,
-               ________________________
+  pivot_longer(2:7, 
+               names_sep = "_",
+               names_to = c("category",".value")
                )
 ```
 
@@ -313,7 +313,10 @@ Pivot the data into a long format to get the following structure:
 ```{r, eval = FALSE}
 Q_growth_stats_long <-
   growth_stats %>%
-  pivot_longer(_________)
+  pivot_longer(2:7,
+               names_sep = "_",
+               names_to = c("year",".value"))
+Q_growth_stats_long
 ```
 
 ```{r, eval = FALSE, include = FALSE}
@@ -359,7 +362,7 @@ So instead of `names_to = c("time", ".value")`, you would have `names_to = c(".v
 child_stats2 %>% 
   pivot_longer(2:5, 
                names_sep = "_",
-               names_to = ________________)
+               names_to = c(".value","year"))
 ```
 
 And that's it!
