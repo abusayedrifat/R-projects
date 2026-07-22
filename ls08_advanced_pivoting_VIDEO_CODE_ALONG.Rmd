@@ -24,7 +24,7 @@ If you are not sure how to use our code-along documents, please watch this video
 ```{r, echo = F, message = F, warning = F}
 # Load packages 
 if(!require(pacman)) install.packages("pacman")
-pacman::p_load(rlang, tidyverse, knitr, here, outbreaks)
+pacman::p_load(rlang, tidyverse, knitr, here, outbreaks, gt)
 
 ## functions
 source(here::here("global/functions/misc_functions.R"))
@@ -590,7 +590,7 @@ You should first distinguish if we have a neat operator or not. Based on this, r
 |              |       |              |       |         |       |
 |              |       |              |       |         |       |
 
-```{r}
+```{r vietnam data}
 Q_diet_diversity_vietnam_long <-
   diet_diversity_vietnam_wide |> 
   rename(
@@ -605,11 +605,9 @@ Q_diet_diversity_vietnam_long <-
     ) |> 
   pivot_longer(2:9,
                names_sep = "__",
-               names_to = c(".value","visit")) |> 
-  dt(Q_diet_diversity_vietnam_long)
+               names_to = c(".value","visit"))
 
-
-
+Q_diet_diversity_vietnam_long
 ```
 
 ```{r, eval = FALSE, include = FALSE}
