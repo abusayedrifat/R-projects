@@ -715,3 +715,43 @@ The following team members contributed to this lesson:
 `r tgc_contributors_list(ids = c("kendavidn", "lolovanco", "camille"))`
 
 #### fetch code
+
+```{r}
+data <- tibble::tribble(
+  ~patient, ~day1_systolic, ~day1_diastolic, ~day2_systolic, ~day2_diastolic,
+  "P1",            120,             80,             122,              82, 
+  "P2",            130,             85,             135,              88, 
+  "P3",            125,             82,             130,              85 
+)
+```
+
+```{r}
+data |> 
+  pivot_longer(-patient, 
+               
+               names_to = c("day", ".value"), 
+               
+               names_sep = "_")
+```
+
+```{r}
+disease_stats_long <- 
+  tibble::tribble(
+    ~country, ~quarter, ~new_cases, ~deaths,
+    "A",    "Q1",        180,         20,
+    "A",    "Q2",        210,         25,
+    "A",    "Q3",        230,         30,
+    "B",    "Q1",        150,         15,
+    "B",    "Q2",        170,         20,
+    "B",    "Q3",        200,         25,
+    "C",    "Q1",        200,         30,
+    "C",    "Q2",        220,         35,
+    "C",    "Q3",        240,         40
+  )
+```
+
+```{r}
+disease_stats_long |> 
+  pivot_wider(names_from = "country",
+              values_from = c("new_cases","deaths"))
+```
