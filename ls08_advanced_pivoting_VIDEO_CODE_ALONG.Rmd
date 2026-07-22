@@ -713,3 +713,5 @@ You data wrangling skills have just been enhanced with advanced pivoting. This s
 The following team members contributed to this lesson:
 
 `r tgc_contributors_list(ids = c("kendavidn", "lolovanco", "camille"))`
+
+#### fetch code
